@@ -1,0 +1,29 @@
+# All blobs below are extracted from caiman BP2A.250805.005
+
+# Pixel Overlays
+product/overlay/AccessibilityMenu__caiman__auto_generated_rro_product.apk:product/overlay/AccessibilityMenuCaiman.apk
+product/overlay/AvatarPickerPixelOverlay.apk
+product/overlay/BuiltInPrintService__caiman__auto_generated_rro_product.apk:product/overlay/PixelPrintServiceOverlay.apk
+product/overlay/ContactsProvider__caiman__auto_generated_rro_product.apk:product/overlay/PixelContactsProviderOverlay.apk
+product/overlay/GlanceableHubConfigOverlay.apk
+product/overlay/GlanceableHubSettingsConfigOverlay.apk
+product/overlay/GlanceableHubSysuiConfigOverlay.apk
+product/overlay/GoogleConfigOverlay.apk
+product/overlay/GoogleWebViewOverlay.apk
+product/overlay/ManagedProvisioningPixelOverlay.apk
+product/overlay/PearlOverlay2024.apk
+product/overlay/PixelBatteryHealthOverlay.apk
+product/overlay/PixelConfigOverlay2018.apk
+product/overlay/PixelConfigOverlay2019.apk
+product/overlay/PixelConfigOverlay2019Midyear.apk
+product/overlay/PixelConfigOverlay2021.apk
+product/overlay/PixelConfigOverlayCommon.apk
+product/overlay/PixelSetupWizardOverlay2024.apk
+product/overlay/SettingsGoogle__caiman__auto_generated_rro_product.apk:product/overlay/PixelSettingsGoogleOverlay.apk
+product/overlay/SettingsProvider__caiman__auto_generated_rro_product.apk:product/overlay/PixelSettingsProviderOverlay.apk
+product/overlay/StorageManagerGoogle__caiman__auto_generated_rro_product.apk:product/overlay/PixelStorageManagerGoogleOverlay.apk
+product/overlay/SystemUIGXOverlay.apk
+product/overlay/SystemUIGoogle__caiman__auto_generated_rro_product.apk:product/overlay/PixelSystemUIGoogleOverlay.apk
+product/overlay/WildlifeSettingsVpnOverlay2022.apk
+product/overlay/WildlifeSysuiVpnOverlay2022.apk
+product/overlay/framework-res__caiman__auto_generated_rro_product.apk:product/overlay/PixelFrameworkOverlay.apk

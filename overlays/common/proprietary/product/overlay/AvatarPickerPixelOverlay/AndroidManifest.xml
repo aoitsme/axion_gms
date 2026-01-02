@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.google.android.pixel.avatarpicker" platformBuildVersionCode="36" platformBuildVersionName="16">
+    <overlay android:isStatic="true" android:priority="210" android:targetName="AvatarPickerGoogle" android:targetPackage="com.google.android.avatarpicker"/>
+    <application android:extractNativeLibs="true" android:hasCode="false" android:label="AvatarPickerPixelOverlay"/>
+</manifest>

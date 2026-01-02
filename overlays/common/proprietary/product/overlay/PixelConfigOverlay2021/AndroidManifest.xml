@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="36" android:compileSdkVersionCodename="16" package="com.google.android.overlay.pixelconfig2021" platformBuildVersionCode="36" platformBuildVersionName="16">
+    <application android:extractNativeLibs="true" android:hasCode="false"/>
+    <overlay android:isStatic="true" android:priority="8" android:targetPackage="android"/>
+</manifest>

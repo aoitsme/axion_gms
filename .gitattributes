@@ -1,0 +1,10 @@
+common/proprietary/product/app/Maps/Maps.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/app/Photos/Photos.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/app/PrebuiltGmail/PrebuiltGmail.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/app/YouTube/YouTube.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/priv-app/DevicePersonalizationPrebuiltPixel2024/DevicePersonalizationPrebuiltPixel2024.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/priv-app/GoogleCamera/GoogleCamera.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/priv-app/PrebuiltBugle/PrebuiltBugle.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/priv-app/PrebuiltGmsCoreVic/PrebuiltGmsCoreVic.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/priv-app/Velvet/Velvet.apk filter=lfs diff=lfs merge=lfs -text
+common/proprietary/product/app/TrichromeLibrary/TrichromeLibrary.apk filter=lfs diff=lfs merge=lfs -text

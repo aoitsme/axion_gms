@@ -277,6 +277,7 @@ PRODUCT_COPY_FILES += \
     vendor/gms/common/proprietary/product/usr/srec/en-US/voice_match/MARBLE_speakerid.tflite:$(TARGET_COPY_OUT_PRODUCT)/usr/srec/en-US/voice_match/MARBLE_speakerid.tflite \
     vendor/gms/common/proprietary/product/usr/srec/en-US/voice_match/MARBLE_voice_filter.tflite:$(TARGET_COPY_OUT_PRODUCT)/usr/srec/en-US/voice_match/MARBLE_voice_filter.tflite \
     vendor/gms/common/proprietary/system/etc/permissions/privapp-permissions-google.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-google.xml \
+    vendor/gms/common/proprietary/system_ext/etc/permissions/com.google.android.apps.pixel.dcservice.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/com.google.android.apps.pixel.dcservice.xml \
     vendor/gms/common/proprietary/system_ext/etc/permissions/privapp-permissions-google-se.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-google-se.xml \
     vendor/gms/common/proprietary/system_ext/etc/permissions/privapp-permissions-satellite.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-satellite.xml \
     vendor/gms/common/proprietary/system_ext/etc/sysconfig/preinstalled-packages-com.android.google.avatarpicker.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/sysconfig/preinstalled-packages-com.android.google.avatarpicker.xml
@@ -354,14 +355,6 @@ PRODUCT_PACKAGES += \
     PixelSatelliteServicePrebuilt \
     SetupWizardPixelPrebuilt_v802049609 \
     StorageManagerGoogle \
-    SystemUIClocks-BigNum \
-    SystemUIClocks-Calligraphy \
-    SystemUIClocks-Flex \
-    SystemUIClocks-Growth \
-    SystemUIClocks-Inflate \
-    SystemUIClocks-Metro \
-    SystemUIClocks-NumOverlap \
-    SystemUIClocks-Weather \
     VendorSatelliteServicePrebuilt \
     WallpaperPickerGoogleRelease \
     com.google.android.dialer.support
@@ -372,8 +365,8 @@ PRODUCT_PACKAGES += \
     GoogleCamera
 endif
 
-TARGET_DEFAULT_PIXEL_LAUNCHER ?= false
-ifeq ($(strip $(TARGET_DEFAULT_PIXEL_LAUNCHER)),true)
+TARGET_SHIP_PIXEL_LAUNCHER ?= false
+ifeq ($(strip $(TARGET_SHIP_PIXEL_LAUNCHER)),true)
 PRODUCT_PACKAGES += \
     NexusLauncherRelease
 endif

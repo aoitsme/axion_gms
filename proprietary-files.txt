@@ -118,6 +118,7 @@ product/priv-app/CreativeAssistant/CreativeAssistant.apk;PRESIGNED
 
 # Customization bundle
 product/priv-app/CustomizationBundlePrebuilt/CustomizationBundlePrebuilt.apk;PRESIGNED
+
 # Device Connectivity Service
 system_ext/priv-app/DeviceConnectivityServicePrebuilt_25.03.00/DeviceConnectivityServicePrebuilt_25.03.00.apk;PRESIGNED
 
@@ -290,6 +291,7 @@ product/etc/permissions/privapp-permissions-google-p.xml
 product/etc/permissions/privapp-permissions-google-pearl.xml
 product/etc/permissions/split-permissions-google.xml
 system/etc/permissions/privapp-permissions-google.xml
+system_ext/etc/permissions/com.google.android.apps.pixel.dcservice.xml
 system_ext/etc/permissions/privapp-permissions-google-se.xml
 
 # PersistentBackgroundServices
@@ -413,16 +415,6 @@ system_ext/priv-app/PixelSatelliteService/PixelSatelliteService.apk:system_ext/p
 product/etc/sysconfig/satellite_sos.xml
 system_ext/etc/permissions/privapp-permissions-satellite.xml
 system_ext/framework/SatelliteClient.jar
-
-# System UI Clocks
-system_ext/priv-app/SystemUIClocks-BigNum/SystemUIClocks-BigNum.apk
-system_ext/priv-app/SystemUIClocks-Calligraphy/SystemUIClocks-Calligraphy.apk
-system_ext/priv-app/SystemUIClocks-Flex/SystemUIClocks-Flex.apk
-system_ext/priv-app/SystemUIClocks-Growth/SystemUIClocks-Growth.apk
-system_ext/priv-app/SystemUIClocks-Inflate/SystemUIClocks-Inflate.apk
-system_ext/priv-app/SystemUIClocks-Metro/SystemUIClocks-Metro.apk
-system_ext/priv-app/SystemUIClocks-NumOverlap/SystemUIClocks-NumOverlap.apk
-system_ext/priv-app/SystemUIClocks-Weather/SystemUIClocks-Weather.apk
 
 # Tags
 system/priv-app/TagGoogle/TagGoogle.apk;OVERRIDES=Tag;PRESIGNED

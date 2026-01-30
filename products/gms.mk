@@ -60,12 +60,19 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.setupwizard.rotation_locked=true \
     setupwizard.feature.baseline_setupwizard_enabled=true \
     setupwizard.feature.day_night_mode_enabled=true \
+    setupwizard.feature.default_locale_enhancement_enabled=true \
     setupwizard.feature.portal_notification=true \
+    setupwizard.feature.provisioning_profile_mode=true \
+    setupwizard.feature.enable_parental_notice_activity=true \
+    setupwizard.feature.enable_parental_setup=true \
     setupwizard.feature.enable_quick_start_flow=true \
     setupwizard.feature.enable_restore_anytime=true \
     setupwizard.feature.enable_wifi_tracker=true \
+    setupwizard.feature.enhanced_setup_design_metrics=true \
     setupwizard.feature.lifecycle_refactoring=true \
+    setupwizard.feature.locale_agnostic_enabled=true \
     setupwizard.feature.notification_refactoring=true \
+    setupwizard.personal_safety_suw_enabled=true \
     setupwizard.feature.show_pai_screen_in_main_flow.carrier1839=false \
     setupwizard.feature.show_pixel_tos=true \
     setupwizard.feature.show_support_link_in_deferred_setup=false \
@@ -73,7 +80,14 @@ PRODUCT_PRODUCT_PROPERTIES += \
     setupwizard.theme=glif_v4_light \
     ro.config.alarm_alert=Fresh_start.ogg \
     ro.config.notification_sound=Eureka.ogg \
-    ro.config.ringtone=Your_new_adventure.ogg
+    ro.config.ringtone=Your_new_adventure.ogg \
+    ro.atrace.core.services=com.google.android.gms,com.google.android.gms.ui,com.google.android.gms.persistent \
+    ro.com.google.ime.system_lm_dir=/product/usr/share/ime/google/d3_lms \
+    ro.com.google.ime.theme_id=5 \
+    ro.error.receiver.system.apps=com.google.android.gms \
+    ro.opa.eligible_device=true \
+    pixel_legal_joint_permission=true \
+    pixel_legal_joint_permission_v2=true
 
 $(call inherit-product, vendor/gms/common/common-vendor.mk)
 $(call inherit-product, vendor/gms/overlays/common/common-vendor.mk)

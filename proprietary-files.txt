@@ -111,7 +111,7 @@ product/app/CalculatorGooglePrebuilt_85006267/CalculatorGooglePrebuilt_85006267.
 product/app/CalendarGooglePrebuilt/CalendarGooglePrebuilt.apk;OVERRIDES=Calendar2,Calendar,Etar;PRESIGNED
 
 # Clock
-product/priv-app/PrebuiltDeskClockGoogle_76006071/PrebuiltDeskClockGoogle_76006071.apk;OVERRIDES=DeskClock;PRESIGNED
+product/priv-app/PrebuiltDeskClockGoogle_76007351/PrebuiltDeskClockGoogle_76007351.apk;OVERRIDES=DeskClock;PRESIGNED
 
 # Creative Assistant
 product/priv-app/CreativeAssistant/CreativeAssistant.apk;PRESIGNED
@@ -120,7 +120,7 @@ product/priv-app/CreativeAssistant/CreativeAssistant.apk;PRESIGNED
 product/priv-app/CustomizationBundlePrebuilt/CustomizationBundlePrebuilt.apk;PRESIGNED
 
 # Device Connectivity Service
-system_ext/priv-app/DeviceConnectivityServicePrebuilt_25.03.00/DeviceConnectivityServicePrebuilt_25.03.00.apk;PRESIGNED
+system_ext/priv-app/DeviceConnectivityServicePrebuilt_25.04.00/DeviceConnectivityServicePrebuilt_25.04.00.apk;PRESIGNED
 
 # Diagnostics/Telemetry
 product/etc/default-permissions/default-permissions_diagnostictool.xml
@@ -128,29 +128,18 @@ product/etc/permissions/com.google.android.apps.diagnosticstool.xml
 product/app/PrebuiltGoogleTelemetryTvp/PrebuiltGoogleTelemetryTvp.apk;PRESIGNED
 #product/priv-app/DiagnosticsToolPrebuilt/DiagnosticsToolPrebuilt.apk;PRESIGNED
 
-# Drive
-product/app/Drive/Drive.apk;PRESIGNED
-
 # Emoji Wallpaper
-product/app/WallpaperEmojiPrebuilt-v5154/WallpaperEmojiPrebuilt-v5154.apk;PRESIGNED
+product/app/WallpaperEmojiPrebuilt-foldable-wallpaper/WallpaperEmojiPrebuilt-foldable-wallpaper.apk;PRESIGNED
 
 # Files
 product/priv-app/FilesPrebuilt/FilesPrebuilt.apk;PRESIGNED
 system/priv-app/DocumentsUIGoogle/DocumentsUIGoogle.apk;OVERRIDES=DocumentsUI;PRESIGNED
 system_ext/priv-app/StorageManagerGoogle/StorageManagerGoogle.apk;OVERRIDES=StorageManager;PRESIGNED
 
-# Flipendo
-system_ext/app/Flipendo/Flipendo.apk
-
-# Gmail
-product/app/PrebuiltGmail/PrebuiltGmail.apk;OVERRIDES=Email;PRESIGNED
-
 # Google search
 product/priv-app/Velvet/Velvet.apk;OVERRIDES=QuickSearchBox;PRESIGNED
 
 # Google Play
-product/app/PlayAutoInstallConfig/PlayAutoInstallConfig.apk
-product/priv-app/ConfigUpdater/ConfigUpdater.apk;PRESIGNED
 product/priv-app/Phonesky/Phonesky.apk;OVERRIDES=messaging;PRESIGNED
 product/priv-app/PrebuiltGmsCoreVic/PrebuiltGmsCoreVic.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/app_chimera/m/PrebuiltGmsCoreVic_AdsDynamite/PrebuiltGmsCoreVic_AdsDynamite.apk;PRESIGNED
@@ -162,9 +151,9 @@ product/priv-app/PrebuiltGmsCore/app_chimera/m/PrebuiltGmsCoreVic_GoogleCertific
 product/priv-app/PrebuiltGmsCore/app_chimera/m/PrebuiltGmsCoreVic_MapsDynamite/PrebuiltGmsCoreVic_MapsDynamite.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/app_chimera/m/PrebuiltGmsCoreVic_MeasurementDynamite/PrebuiltGmsCoreVic_MeasurementDynamite.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/m/independent/AndroidPlatformServices/AndroidPlatformServices.apk;PRESIGNED
-product/priv-app/PrebuiltGmsCore/m/optional/MlkitBarcodeUIPrebuilt/MlkitBarcodeUIPrebuilt.apk;PRESIGNED
-product/priv-app/PrebuiltGmsCore/m/optional/TfliteDynamitePrebuilt/TfliteDynamitePrebuilt.apk;PRESIGNED
-product/priv-app/PrebuiltGmsCore/m/optional/VisionBarcodePrebuilt/VisionBarcodePrebuilt.apk;PRESIGNED
+product/priv-app/PrebuiltGmsCore/m/optional/MlkitBarcodeUIPrebuilt.apk;PRESIGNED
+product/priv-app/PrebuiltGmsCore/m/optional/TfliteDynamitePrebuilt.apk;PRESIGNED
+product/priv-app/PrebuiltGmsCore/m/optional/VisionBarcodePrebuilt.apk;PRESIGNED
 system/app/GoogleExtShared/GoogleExtShared.apk;OVERRIDES=ExtShared;PRESIGNED
 system_ext/priv-app/GoogleFeedback/GoogleFeedback.apk;PRESIGNED
 system_ext/priv-app/GoogleServicesFramework/GoogleServicesFramework.apk;PRESIGNED
@@ -172,10 +161,6 @@ system_ext/priv-app/GoogleServicesFramework/GoogleServicesFramework.apk;PRESIGNE
 # Health Connect
 product/priv-app/HealthIntelligencePrebuilt-1762/HealthIntelligencePrebuilt-1762.apk:product/priv-app/HealthIntelligencePrebuilt/HealthIntelligencePrebuilt.apk;OVERRIDES=HealthIntelligencePrebuilt-1762;PRESIGNED
 product/etc/sysconfig/firproximity.xml
-
-# Intelligence
-product/priv-app/DeviceIntelligenceNetworkPrebuilt-bfinal_astrea_20250217.00_RC00/DeviceIntelligenceNetworkPrebuilt-bfinal_astrea_20250217.00_RC00.apk:product/priv-app/DeviceIntelligenceNetworkPrebuilt/DeviceIntelligenceNetworkPrebuilt.apk;OVERRIDES=DeviceIntelligenceNetworkPrebuilt-bfinal_astrea_20250217.00_RC00;PRESIGNED
-#product/priv-app/DevicePersonalizationPrebuiltPixel2024-U.32_V.7_playstore_aiai_20240725.00_RC08/DevicePersonalizationPrebuiltPixel2024-U.32_V.7_playstore_aiai_20240725.00_RC08.apk:product/priv-app/DevicePersonalizationPrebuiltPixel2024/DevicePersonalizationPrebuiltPixel2024.apk;OVERRIDES=DevicePersonalizationPrebuiltPixel2024-U.32_V.7_playstore_aiai_20240725.00_RC08;PRESIGNED
 
 # Keyboard
 product/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk;OVERRIDES=LatinIME;PRESIGNED
@@ -185,10 +170,6 @@ product/usr/share/ime/google/d3_lms/zh_CN_2018030706.zip
 
 # Location
 product/app/LocationHistoryPrebuilt/LocationHistoryPrebuilt.apk;PRESIGNED
-product/app/Maps/Maps.apk;PRESIGNED
-
-# Meet
-product/app/MeetPrebuilt_20250518/MeetPrebuilt_20250518.apk;PRESIGNED
 
 # Music detector
 product/etc/firmware/music_detector.descriptor
@@ -305,23 +286,17 @@ product/priv-app/PrebuiltBugle/PrebuiltBugle.apk;OVERRIDES=messaging;PRESIGNED
 
 # Photo
 product/app/MarkupGoogle_v2/MarkupGoogle_v2.apk;PRESIGNED
-product/app/Photos/Photos.apk;OVERRIDES=Gallery,Gallery2,Glimpse;PRESIGNED
 
 # Pixel
-system_ext/priv-app/NexusLauncherRelease/NexusLauncherRelease.apk
 product/app/VoiceAccessPrebuilt/VoiceAccessPrebuilt.apk;PRESIGNED
 product/priv-app/DreamlinerDreamsPrebuilt_100894/DreamlinerDreamsPrebuilt_100894.apk;PRESIGNED
 product/priv-app/DreamlinerPrebuilt_22000020/DreamlinerPrebuilt_22000020.apk;PRESIGNED
 product/priv-app/DreamlinerUpdater/DreamlinerUpdater.apk;PRESIGNED
 product/priv-app/GoogleCamera/GoogleCamera.apk;OVERRIDES=Aperture,Camera,Camera2;PRESIGNED
-product/priv-app/SettingsIntelligenceGooglePrebuilt/SettingsIntelligenceGooglePrebuilt.apk;OVERRIDES=SettingsIntelligence;PRESIGNED
 product/priv-app/WallpaperEffect/WallpaperEffect.apk;PRESIGNED
 
 # Pixel AI
 product/priv-app/PixelAIPrebuilt/PixelAIPrebuilt.apk;PRESIGNED
-
-# Pixel Support
-product/priv-app/PixelSupportPrebuilt/PixelSupportPrebuilt.apk;PRESIGNED
 
 # PrebuiltPixelCoreServices
 product/priv-app/PrebuiltPixelCoreServices/PrebuiltPixelCoreServices.apk;PRESIGNED
@@ -336,16 +311,12 @@ product/priv-app/RelationshipsPrebuilt-301/RelationshipsPrebuilt-301.apk;PRESIGN
 #system_ext/app/RepairMode/RepairMode.apk
 #system_ext/etc/init/init.repair_mode.rc
 
-# Retail
-#product/priv-app/RetailCorePrebuilt/RetailCorePrebuilt.apk
-#product/priv-app/RetailDemoGooglePrebuilt/RetailDemoGooglePrebuilt.apk
-
 # SafetyHub
 product/priv-app/SafetyHubPrebuilt/SafetyHubPrebuilt.apk;OVERRIDES=EmergencyInfo;PRESIGNED
 system_ext/app/EmergencyInfoGoogleNoUi/EmergencyInfoGoogleNoUi.apk
 
 # Scribe
-product/priv-app/ScribePrebuilt_v8.2.717788270/ScribePrebuilt_v8.2.717788270.apk;PRESIGNED
+product/priv-app/ScribePrebuilt_v8.4.773573318/ScribePrebuilt_v8.4.773573318.apk;PRESIGNED
 
 # Search Selector
 product/priv-app/SearchSelectorPrebuilt/SearchSelectorPrebuilt.apk;PRESIGNED
@@ -357,14 +328,14 @@ product/etc/security/fsverity/play_store_fsi_cert.der
 
 # Setup
 product/priv-app/GoogleOneTimeInitializer/GoogleOneTimeInitializer.apk;OVERRIDES=OneTimeInitializer;PRESIGNED
-product/priv-app/GoogleRestorePrebuilt-v766453/GoogleRestorePrebuilt-v766453.apk;PRESIGNED
+product/priv-app/GoogleRestorePrebuilt-v842048/GoogleRestorePrebuilt-v842048.apk;PRESIGNED
 product/priv-app/PartnerSetupPrebuilt/PartnerSetupPrebuilt.apk;PRESIGNED
-product/priv-app/SetupWizardPrebuilt_v794452731/SetupWizardPrebuilt_v794452731.apk;OVERRIDES=Provision;PRESIGNED
-system_ext/priv-app/SetupWizardPixelPrebuilt_v802049609/SetupWizardPixelPrebuilt_v802049609.apk;OVERRIDES=LineageSetupWizard;PRESIGNED
+product/priv-app/SetupWizardPrebuilt_v811313066/SetupWizardPrebuilt_v811313066.apk;OVERRIDES=Provision;PRESIGNED
+system_ext/priv-app/SetupWizardPixelPrebuilt_v802960446/SetupWizardPixelPrebuilt_v802960446.apk;OVERRIDES=LineageSetupWizard;PRESIGNED
 
 # Sound
 product/app/SoundAmplifierPrebuilt_v4.8.758106410/SoundAmplifierPrebuilt_v4.8.758106410.apk;PRESIGNED
-product/app/SoundPickerPrebuilt_33000062/SoundPickerPrebuilt_33000062.apk;PRESIGNED
+product/app/SoundPickerPrebuilt_33000242/SoundPickerPrebuilt_33000242.apk;PRESIGNED
 
 # Switch Access
 product/app/SwitchAccessPrebuilt_1.16.0.726766860/SwitchAccessPrebuilt_1.16.0.726766860.apk;PRESIGNED
@@ -419,36 +390,20 @@ system_ext/framework/SatelliteClient.jar
 # Tags
 system/priv-app/TagGoogle/TagGoogle.apk;OVERRIDES=Tag;PRESIGNED
 
-# Tips
-product/priv-app/TipsPrebuilt_v6.0.0.734377952/TipsPrebuilt_v6.0.0.734377952.apk;PRESIGNED
-
 # Themes
 product/app/PixelThemesStub2022_and_newer/PixelThemesStub2022_and_newer.apk;PRESIGNED
-system_ext/priv-app/WallpaperPickerGoogleRelease/WallpaperPickerGoogleRelease.apk;OVERRIDES=ThemePicker,WallpaperPicker2,WallpaperPicker,WallpaperCropper;PRESIGNED
 
 # TTS
-product/tts/google/de-de/de-de-x-multi-r57.zvoice
-product/tts/google/es-es/es-es-x-multi-r56.zvoice
-product/tts/google/fr-fr/fr-fr-x-multi-r57.zvoice
-product/tts/google/it-it/it-it-x-multi-r54.zvoice
-product/tts/google/ja-jp/ja-jp-x-multi-r55.zvoice
-
-# Turbo
-product/priv-app/TurboPrebuilt/TurboPrebuilt.apk;PRESIGNED
+product/tts/google/de-de/de-de-x-multi-r60.zvoice
+product/tts/google/es-es/es-es-x-multi-r59.zvoice
+product/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice
+product/tts/google/it-it/it-it-x-multi-r57.zvoice
+product/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice
 
 # Voice
 product/app/GoogleTTS/GoogleTTS.apk;OVERRIDES=PicoTts;PRESIGNED
 product/app/talkback/talkback.apk;PRESIGNED
 product/priv-app/RecorderPrebuilt_725581069/RecorderPrebuilt_725581069.apk;OVERRIDES=Recorder;PRESIGNED
 
-# Wallpapers
-product/app/PixelWallpapers2024/PixelWallpapers2024.apk
-
-# Weather
-product/priv-app/WeatherPixelPrebuilt_10006113/WeatherPixelPrebuilt_10006113.apk;PRESIGNED
-
 # Wellbeing
 product/priv-app/WellbeingPrebuilt/WellbeingPrebuilt.apk;PRESIGNED
-
-# YouTube
-product/app/YouTube/YouTube.apk;PRESIGNED

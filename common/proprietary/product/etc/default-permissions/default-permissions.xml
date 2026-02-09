@@ -102,6 +102,8 @@
         <!-- Call logs -->
         <permission name="android.permission.READ_CALL_LOG" fixed="false"/>
         <permission name="android.permission.WRITE_CALL_LOG" fixed="false"/>
+        <!-- Calendars -->
+        <permission name="android.permission.READ_CALENDAR" fixed="false"/>
         <!-- Used to set up a Wi-Fi P2P network -->
         <permission name="android.permission.NEARBY_WIFI_DEVICES" fixed="false"/>
         <!-- Notifications -->
@@ -137,15 +139,15 @@
     </exception>
 
     <exception package="com.google.android.apps.accessibility.voiceaccess">
-        <!-- Voice Access: A11y app to allow users to setup & control their devices with voice -->
-        <!-- Approved android bug for pregrant permissions: b/182307492 -->
+        <!-- Voice Access: A11y app to allow users to setup & control their devices with voice -->
+        <!-- Approved android bug for pregrant permissions: b/182307492 -->
 
         <!-- Phone state to turn off Voice Access when user is in a phone call -->
         <permission name="android.permission.READ_PHONE_STATE" fixed="false"/>
 
         <!-- Microphone: To hear user's voice commands -->
         <permission name="android.permission.RECORD_AUDIO" fixed="false"/>
-    </exception>
+    </exception>
     <exception
         package="com.google.android.deskclock">
         <!-- Notifications -->

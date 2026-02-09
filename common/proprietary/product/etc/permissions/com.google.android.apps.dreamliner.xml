@@ -7,5 +7,6 @@
         <permission name="android.permission.PROVIDE_TRUST_AGENT"/>
         <permission name="android.permission.MANAGE_USB"/>
         <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+        <permission name="android.permission.REAL_GET_TASKS"/>
     </privapp-permissions>
 </permissions>

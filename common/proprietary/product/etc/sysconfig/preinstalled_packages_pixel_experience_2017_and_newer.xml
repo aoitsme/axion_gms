@@ -22,4 +22,24 @@
         <install-in user-type="android.os.usertype.profile.MANAGED" />
         <install-in user-type="android.os.usertype.profile.PRIVATE" />
     </install-in-user-type>
+
+    <!--  Camera (GoogleCamera) -->
+    <install-in-user-type package="com.google.android.GoogleCamera">
+        <install-in user-type="FULL" />
+        <install-in user-type="android.os.usertype.profile.MANAGED" />
+        <install-in user-type="android.os.usertype.profile.PRIVATE" />
+    </install-in-user-type>
+
+    <!--  Wellbeing App (WellbeingPrebuilt) -->
+    <install-in-user-type package="com.google.android.apps.wellbeing">
+        <install-in user-type="FULL" />
+        <install-in user-type="android.os.usertype.profile.MANAGED" />
+    </install-in-user-type>
+
+    <!--  Developer Verifier App (VerifierPrebuiltClassic) -->
+    <install-in-user-type package="com.google.android.verifier">
+        <install-in user-type="FULL" />
+        <install-in user-type="android.os.usertype.profile.MANAGED" />
+        <install-in user-type="android.os.usertype.profile.PRIVATE" />
+    </install-in-user-type>
 </config>

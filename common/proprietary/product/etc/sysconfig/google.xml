@@ -137,6 +137,9 @@
     <!-- Gboard can bind to the AI services open-source network component. -->
     <allow-association target="com.google.android.as.oss" allowed="com.google.android.inputmethod.latin" />
 
+     <!-- Specify the explicit set of other applications that Glasses Secure service is allowed to interact with.-->
+    <allow-association target="com.google.android.glasses.secure" allowed="com.google.android.as.oss" />
+
     <!-- Specify the explicit set of other applications whose app data directories are
         accessible by other applications. -->
     <app-data-isolation-whitelisted-app package="com.google.android.gms" />
@@ -147,6 +150,7 @@
 
     <!-- Specify the installer eligiable for updating the given GMS package. -->
     <update-ownership package="com.google.android.gms" installer="com.android.vending" />
+    <update-ownership package="com.google.android.verifier" installer="com.android.vending" />
 
     <!-- Denylist of packages that are not eligible for automatic rollback -->
     <automatic-rollback-denylisted-app package="com.android.vending" />

@@ -203,11 +203,11 @@ PRODUCT_COPY_FILES += \
     vendor/gms/common/proprietary/product/media/audio/ui/camera_focus.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ui/camera_focus.ogg \
     vendor/gms/common/proprietary/product/media/audio/ui/reverse_charging_end.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ui/reverse_charging_end.ogg \
     vendor/gms/common/proprietary/product/media/audio/ui/reverse_charging_start.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ui/reverse_charging_start.ogg \
-    vendor/gms/common/proprietary/product/tts/google/de-de/de-de-x-multi-r57.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/de-de/de-de-x-multi-r57.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/es-es/es-es-x-multi-r56.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/es-es/es-es-x-multi-r56.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/fr-fr/fr-fr-x-multi-r57.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/fr-fr/fr-fr-x-multi-r57.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/it-it/it-it-x-multi-r54.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/it-it/it-it-x-multi-r54.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/ja-jp/ja-jp-x-multi-r55.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/ja-jp/ja-jp-x-multi-r55.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/de-de/de-de-x-multi-r60.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/de-de/de-de-x-multi-r60.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/es-es/es-es-x-multi-r59.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/es-es/es-es-x-multi-r59.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/it-it/it-it-x-multi-r57.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/it-it/it-it-x-multi-r57.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice \
     vendor/gms/common/proprietary/product/usr/share/ime/google/d3_lms/ko_2018030706.zip:$(TARGET_COPY_OUT_PRODUCT)/usr/share/ime/google/d3_lms/ko_2018030706.zip \
     vendor/gms/common/proprietary/product/usr/share/ime/google/d3_lms/mozc.data:$(TARGET_COPY_OUT_PRODUCT)/usr/share/ime/google/d3_lms/mozc.data \
     vendor/gms/common/proprietary/product/usr/share/ime/google/d3_lms/zh_CN_2018030706.zip:$(TARGET_COPY_OUT_PRODUCT)/usr/share/ime/google/d3_lms/zh_CN_2018030706.zip \
@@ -297,29 +297,26 @@ PRODUCT_PACKAGES += \
     MarkupGoogle_v2 \
     NgaResources \
     PixelThemesStub2022_and_newer \
-    PlayAutoInstallConfig \
     PrebuiltGoogleTelemetryTvp \
     SoundAmplifierPrebuilt_v4.8.758106410 \
-    SoundPickerPrebuilt_33000062 \
+    SoundPickerPrebuilt_33000242 \
     SwitchAccessPrebuilt_1.16.0.726766860 \
     VoiceAccessPrebuilt \
-    WallpaperEmojiPrebuilt-v5154 \
+    WallpaperEmojiPrebuilt-foldable-wallpaper \
     arcore-1.48 \
     talkback \
     AICorePrebuilt \
     AmbientStreaming \
     AndroidAutoStubPrebuilt \
-    ConfigUpdater \
     CustomizationBundlePrebuilt \
-    DeviceIntelligenceNetworkPrebuilt \
     FilesPrebuilt \
     GoogleDialer \
     GoogleOneTimeInitializer \
-    GoogleRestorePrebuilt-v766453 \
+    GoogleRestorePrebuilt-v842048 \
     PartnerSetupPrebuilt \
     Phonesky \
     PrebuiltBugle \
-    PrebuiltDeskClockGoogle_76006071 \
+    PrebuiltDeskClockGoogle_76007351 \
     PrebuiltGmsCoreVic_AdsDynamite \
     PrebuiltGmsCoreVic_CronetDynamite \
     PrebuiltGmsCoreVic_DynamiteLoader \
@@ -336,27 +333,22 @@ PRODUCT_PACKAGES += \
     PrebuiltPixelCoreServices \
     RelationshipsPrebuilt-301 \
     SafetyHubPrebuilt \
-    ScribePrebuilt_v8.2.717788270 \
+    ScribePrebuilt_v8.4.773573318 \
     SearchSelectorPrebuilt \
-    SettingsIntelligenceGooglePrebuilt \
-    SetupWizardPrebuilt_v794452731 \
-    TurboPrebuilt \
+    SetupWizardPrebuilt_v811313066 \
     Velvet \
     WallpaperEffect \
-    WeatherPixelPrebuilt_10006113 \
     WellbeingPrebuilt \
     AccessibilityMenu \
     EmergencyInfoGoogleNoUi \
-    Flipendo \
     PersistentBackgroundServices \
-    DeviceConnectivityServicePrebuilt_25.03.00 \
+    DeviceConnectivityServicePrebuilt_25.04.00 \
     GoogleFeedback \
     GoogleServicesFramework \
     PixelSatelliteServicePrebuilt \
-    SetupWizardPixelPrebuilt_v802049609 \
+    SetupWizardPixelPrebuilt_v802960446 \
     StorageManagerGoogle \
     VendorSatelliteServicePrebuilt \
-    WallpaperPickerGoogleRelease \
     com.google.android.dialer.support
 
 TARGET_PREBUILT_GOOGLE_CAMERA ?= false

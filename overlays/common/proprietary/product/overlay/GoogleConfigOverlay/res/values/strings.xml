@@ -44,7 +44,7 @@
     <string name="config_systemFinancedDeviceController">com.google.android.devicelockcontroller</string>
     <string name="config_systemGallery">com.google.android.apps.photos</string>
     <string name="config_systemGameService">com.google.android.gms</string>
-    <string name="config_systemSettingsIntelligence">com.google.android.settings.intelligence</string>
+    <string name="config_systemSettingsIntelligence">com.android.settings.intelligence</string>
     <string name="config_systemSpeechRecognizer">com.google.android.tts</string>
     <string name="config_systemWellbeing">com.google.android.apps.wellbeing</string>
     <string name="harmful_app_warning_title">Play Protect warning</string>

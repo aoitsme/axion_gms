@@ -40,6 +40,7 @@ PRODUCT_PACKAGES += \
     GoogleRestorePrebuilt-v766453 \
     GoogleServicesFramework \
     MlkitBarcodeUIPrebuilt \
+    AvatarPickerGoogle \
     Phonesky \
     PlayAutoInstallConfig \
     PrebuiltGmsCoreVic \
@@ -325,6 +326,7 @@ PRODUCT_PACKAGES += \
     PrebuiltGmsCoreVic_GoogleCertificates \
     PrebuiltGmsCoreVic_MapsDynamite \
     PrebuiltGmsCoreVic_MeasurementDynamite \
+    AvatarPickerGoogle \
     AndroidPlatformServices \
     MlkitBarcodeUIPrebuilt \
     TfliteDynamitePrebuilt \
@@ -374,7 +376,6 @@ ifeq ($(strip $(TARGET_GMS_EXTRAS)),true)
 PRODUCT_PACKAGES += \
     AdaptiveVPNPrebuilt-10435 \
     WallpaperAIPrebuilt_10000372 \
-    AvatarPickerGoogle \
     Chrome-Stub \
     CreativeAssistant \
     DreamlinerDreamsPrebuilt_100894 \
@@ -401,7 +402,6 @@ TARGET_GMS_EXTRAS_MINIMAL ?= false
 ifeq ($(strip $(TARGET_GMS_EXTRAS_MINIMAL)),true)
 PRODUCT_PACKAGES += \
     WallpaperAIPrebuilt_10000372 \
-    AvatarPickerGoogle \
     CreativeAssistant \
     PixelAIPrebuilt \
     PixelSupportPrebuilt \

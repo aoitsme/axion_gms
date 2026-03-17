@@ -91,7 +91,7 @@ def post_regenerate_customizations():
     copy_lines, pkg_lines = extract_lists(content)
 
     extras_to_remove = [
-        'AdaptiveVPNPrebuilt-10435', 'WallpaperAIPrebuilt_10000372', 'AvatarPickerGoogle',
+        'AdaptiveVPNPrebuilt-10435', 'WallpaperAIPrebuilt_10000372',
         'Chrome-Stub', 'CreativeAssistant', 'DreamlinerDreamsPrebuilt_100894',
         'DreamlinerPrebuilt_22000020', 'DreamlinerUpdater', 'Drive', 'Maps', 'MeetPrebuilt_20250518',
         'Photos', 'PixelAIPrebuilt', 'PixelSupportPrebuilt', 'PixelWallpapers2024',
@@ -130,6 +130,7 @@ def post_regenerate_customizations():
 
     core_pkg_list = [
         'AndroidPlatformServices',
+        'AvatarPickerGoogle',
         'ConfigUpdater',
         'GoogleRestorePrebuilt-v766453',
         'GoogleServicesFramework',
@@ -202,7 +203,6 @@ def post_regenerate_customizations():
     gms_str += 'PRODUCT_PACKAGES += \\\n'
     gms_str += '    AdaptiveVPNPrebuilt-10435 \\\n'
     gms_str += '    WallpaperAIPrebuilt_10000372 \\\n'
-    gms_str += '    AvatarPickerGoogle \\\n'
     gms_str += '    Chrome-Stub \\\n'
     gms_str += '    CreativeAssistant \\\n'
     gms_str += '    DreamlinerDreamsPrebuilt_100894 \\\n'
@@ -229,7 +229,6 @@ def post_regenerate_customizations():
     gms_str += 'ifeq ($(strip $(TARGET_GMS_EXTRAS_MINIMAL)),true)\n'
     gms_str += 'PRODUCT_PACKAGES += \\\n'
     gms_str += '    WallpaperAIPrebuilt_10000372 \\\n'
-    gms_str += '    AvatarPickerGoogle \\\n'
     gms_str += '    CreativeAssistant \\\n'
     gms_str += '    PixelAIPrebuilt \\\n'
     gms_str += '    PixelSupportPrebuilt \\\n'

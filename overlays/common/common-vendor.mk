@@ -2,6 +2,8 @@
 # Automatically generated file. DO NOT MODIFY
 #
 
+TARGET_CORE_GMS ?= false
+
 PRODUCT_SOONG_NAMESPACES += \
     vendor/gms/overlays/common
 
@@ -11,7 +13,6 @@ PRODUCT_PACKAGES += \
  GlanceableHubConfigOverlay \
  GlanceableHubSettingsConfigOverlay \
  GlanceableHubSysuiConfigOverlay \
- GoogleConfigOverlay \
  GoogleWebViewOverlay \
  ManagedProvisioningPixelOverlay \
  PearlOverlay2024 \
@@ -32,3 +33,8 @@ PRODUCT_PACKAGES += \
  SystemUIGXOverlay \
  WildlifeSettingsVpnOverlay2022 \
  WildlifeSysuiVpnOverlay2022
+
+ifneq ($(strip $(TARGET_CORE_GMS)),true)
+PRODUCT_PACKAGES += \
+ GoogleConfigOverlay
+endif

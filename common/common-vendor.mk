@@ -59,6 +59,7 @@ PRODUCT_PACKAGES += \
     ifeq ($(strip $(TARGET_CORE_GMS_EXTRAS)),true)
     PRODUCT_PACKAGES += \
         Velvet \
+        LatinIMEGooglePrebuilt \
         Photos
     endif
 else

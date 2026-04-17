@@ -42,6 +42,7 @@ PRODUCT_PACKAGES += \
     MlkitBarcodeUIPrebuilt \
     AvatarPickerGoogle \
     Phonesky \
+    MarkupGoogle_v2 \
     PlayAutoInstallConfig \
     PrebuiltGmsCoreVic \
     PrebuiltGmsCoreVic_AdsDynamite \
@@ -61,6 +62,14 @@ PRODUCT_PACKAGES += \
         Velvet \
         LatinIMEGooglePrebuilt \
         Photos
+    endif
+
+    ifeq ($(strip $(TARGET_CORE_GMS_TELEPHONY)),true)
+    PRODUCT_PACKAGES += \
+        GoogleContacts \
+        GoogleDialer \
+        PrebuiltBugle \
+        com.google.android.dialer.support
     endif
 else
 PRODUCT_COPY_FILES += \

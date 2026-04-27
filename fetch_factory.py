@@ -76,17 +76,18 @@ def _http_download(url: str, dest: Path, resume_from: int = 0) -> None:
         sys.stdout.write("\n")
 
 
-def _resolve_latest(device: str, html: str) -> tuple[str, str]:
+def _resolve_latest(device: str, release: str, html: str) -> tuple[str, str]:
     dev = re.escape(device)
+    rel = re.escape(release)
     url_re = re.compile(
-        rf"https://dl\.google\.com/dl/android/aosp/{dev}-bp4a\."
+        rf"https://dl\.google\.com/dl/android/aosp/{dev}-{rel}\."
         rf"[^\"\s]+-factory-[a-f0-9]+\.zip",
         re.IGNORECASE,
     )
-    bid_re = re.compile(rf"{dev}-(bp4a\.[^-]+)-factory", re.IGNORECASE)
+    bid_re = re.compile(rf"{dev}-({rel}\.[^-]+)-factory", re.IGNORECASE)
     all_urls = sorted(set(url_re.findall(html)))
     if not all_urls:
-        raise SystemExit(f"[fetch] No BP4A factory image found for {device}")
+        raise SystemExit(f"[fetch] No {release} factory image found for {device}")
     base_urls = [u for u in all_urls if BASE_BUILD_RE.search(u)]
     pool = base_urls or all_urls
     pool.sort(key=lambda u: bid_re.search(u).group(1))
@@ -157,10 +158,10 @@ def _purge_empty_partition_stubs(inner: Path) -> None:
             print(f"[fetch] purged empty partition stub: {d}")
 
 
-def fetch_latest_bp4a_factory(device: str = DEFAULT_DEVICE) -> str:
+def fetch_latest_factory(device: str = DEFAULT_DEVICE, release: str = "bp4a") -> str:
     print(f"[fetch] index: {INDEX_URL}")
     html = _http_get(INDEX_URL).decode("utf-8", errors="replace")
-    latest, build_id = _resolve_latest(device, html)
+    latest, build_id = _resolve_latest(device, release, html)
     print(f"[fetch] latest: {build_id}")
     print(f"[fetch] url:    {latest}")
 
@@ -208,4 +209,5 @@ def fetch_latest_bp4a_factory(device: str = DEFAULT_DEVICE) -> str:
 
 if __name__ == "__main__":
     device = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("FETCH_DEVICE", DEFAULT_DEVICE)
-    print(fetch_latest_bp4a_factory(device))
+    release = sys.argv[2] if len(sys.argv) > 2 else "bp4a"
+    print(fetch_latest_factory(device, release))

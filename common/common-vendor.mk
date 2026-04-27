@@ -36,6 +36,11 @@ PRODUCT_COPY_FILES += \
     vendor/gms/common/proprietary/product/etc/sysconfig/preinstalled_packages_pixel_experience_2017_and_newer.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/preinstalled_packages_pixel_experience_2017_and_newer.xml \
     vendor/gms/common/proprietary/product/etc/sysconfig/preinstalled_packages_pixel_experience_2021_and_newer.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/preinstalled_packages_pixel_experience_2021_and_newer.xml \
     vendor/gms/common/proprietary/product/etc/sysconfig/preinstalled_packages_repair_mode.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/preinstalled_packages_repair_mode.xml \
+    vendor/gms/common/proprietary/product/tts/google/de-de/de-de-x-multi-r60.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/de-de/de-de-x-multi-r60.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/es-es/es-es-x-multi-r59.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/es-es/es-es-x-multi-r59.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/it-it/it-it-x-multi-r57.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/it-it/it-it-x-multi-r57.zvoice \
+    vendor/gms/common/proprietary/product/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice \
     vendor/gms/common/proprietary/system/etc/permissions/privapp-permissions-google.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-google.xml \
     vendor/gms/common/proprietary/system_ext/etc/permissions/CccDkTimeSyncService.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/CccDkTimeSyncService.xml \
     vendor/gms/common/proprietary/system_ext/etc/permissions/org.carconnectivity.android.digitalkey.timesync.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/org.carconnectivity.android.digitalkey.timesync.xml \
@@ -43,105 +48,14 @@ PRODUCT_COPY_FILES += \
 
 TARGET_GAPPS_VARIANT ?= gms
 ifeq ($(strip $(TARGET_CORE_GMS)),true)
-TARGET_GAPPS_VARIANT := core
+    TARGET_GAPPS_VARIANT := core
 endif
 
+# Map Gapps variant to Soong phony modules
 ifeq ($(strip $(TARGET_GAPPS_VARIANT)),pico)
-PRODUCT_PACKAGES += \
-    AndroidPlatformServices \
-    GoogleExtShared \
-    GoogleFeedback \
-    GoogleServicesFramework \
-    MlkitBarcodeUIPrebuilt \
-    Phonesky \
-    PrebuiltGmsCoreVic \
-    PrebuiltGmsCoreVic_AdsDynamite \
-    PrebuiltGmsCoreVic_CronetDynamite \
-    PrebuiltGmsCoreVic_DynamiteLoader \
-    PrebuiltGmsCoreVic_DynamiteModulesA \
-    PrebuiltGmsCoreVic_DynamiteModulesC \
-    PrebuiltGmsCoreVic_GoogleCertificates \
-    PrebuiltGmsCoreVic_MapsDynamite \
-    PrebuiltGmsCoreVic_MeasurementDynamite \
-    TfliteDynamitePrebuilt \
-    VisionBarcodePrebuilt \
-    com.google.android.dialer.support
-
+    PRODUCT_PACKAGES += GmsCoreMain
 else ifeq ($(strip $(TARGET_GAPPS_VARIANT)),core)
-PRODUCT_PACKAGES += \
-    AndroidPlatformServices \
-    GoogleExtShared \
-    GoogleFeedback \
-    GoogleServicesFramework \
-    MlkitBarcodeUIPrebuilt \
-    Phonesky \
-    PrebuiltGmsCoreVic \
-    PrebuiltGmsCoreVic_AdsDynamite \
-    PrebuiltGmsCoreVic_CronetDynamite \
-    PrebuiltGmsCoreVic_DynamiteLoader \
-    PrebuiltGmsCoreVic_DynamiteModulesA \
-    PrebuiltGmsCoreVic_DynamiteModulesC \
-    PrebuiltGmsCoreVic_GoogleCertificates \
-    PrebuiltGmsCoreVic_MapsDynamite \
-    PrebuiltGmsCoreVic_MeasurementDynamite \
-    TfliteDynamitePrebuilt \
-    VisionBarcodePrebuilt \
-    com.google.android.dialer.support \
-    AccessibilityMenu \
-    AndroidAutoStubPrebuilt \
-    CccDkTimeSyncService \
-    DocumentsUIGoogle \
-    GoogleOneTimeInitializer \
-    GooglePrintRecommendationService \
-    GoogleRestorePrebuilt \
-    LatinIMEGooglePrebuilt \
-    PartnerSetupPrebuilt \
-    SetupWizardPixelPrebuilt_v802960446 \
-    SetupWizardPrebuilt_v811313066 \
-    org.carconnectivity.android.digitalkey.timesync \
-    WellbeingPrebuilt
-
+    PRODUCT_PACKAGES += GmsCoreAndroid
 else
-PRODUCT_PACKAGES += \
-    AndroidPlatformServices \
-    GoogleExtShared \
-    GoogleFeedback \
-    GoogleServicesFramework \
-    MlkitBarcodeUIPrebuilt \
-    Phonesky \
-    PrebuiltGmsCoreVic \
-    PrebuiltGmsCoreVic_AdsDynamite \
-    PrebuiltGmsCoreVic_CronetDynamite \
-    PrebuiltGmsCoreVic_DynamiteLoader \
-    PrebuiltGmsCoreVic_DynamiteModulesA \
-    PrebuiltGmsCoreVic_DynamiteModulesC \
-    PrebuiltGmsCoreVic_GoogleCertificates \
-    PrebuiltGmsCoreVic_MapsDynamite \
-    PrebuiltGmsCoreVic_MeasurementDynamite \
-    TfliteDynamitePrebuilt \
-    VisionBarcodePrebuilt \
-    com.google.android.dialer.support \
-    AccessibilityMenu \
-    AndroidAutoStubPrebuilt \
-    CccDkTimeSyncService \
-    DocumentsUIGoogle \
-    GoogleOneTimeInitializer \
-    GooglePrintRecommendationService \
-    GoogleRestorePrebuilt \
-    LatinIMEGooglePrebuilt \
-    PartnerSetupPrebuilt \
-    SetupWizardPixelPrebuilt_v802960446 \
-    SetupWizardPrebuilt_v811313066 \
-    org.carconnectivity.android.digitalkey.timesync \
-    WellbeingPrebuilt \
-    CalculatorGooglePrebuilt_85006267 \
-    CalendarGooglePrebuilt \
-    GoogleContacts \
-    GoogleDialer \
-    MarkupGoogle_v2 \
-    PrebuiltBugle \
-    PrebuiltDeskClockGoogle_76007351 \
-    Velvet \
-    talkback
-
+    PRODUCT_PACKAGES += GmsCoreFull
 endif

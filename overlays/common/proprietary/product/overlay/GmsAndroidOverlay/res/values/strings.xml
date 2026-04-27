@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="config_appsAuthorizedForSharedAccounts">;com.android.vending;com.android.settings;</string>
+    <string name="config_defaultListenerAccessPackages">com.google.android.apps.nexuslauncher:com.google.android.setupwizard:com.google.android.apps.pixelmigrate:com.google.android.as:com.google.android.projection.gearhead:com.google.android.apps.dreamliner:com.google.pixel.exo:com.google.android.odad:com.google.ambient.streaming</string>
+    <string name="config_help_url_action_disabled_by_advanced_protection">intent:#Intent;action=com.google.android.gms.settings.ADVANCED_PROTECTION;package=com.google.android.gms;end</string>
+    <string name="config_defaultDndAccessPackages">com.google.android.GoogleCamera:com.google.android.gms:com.google.android.settings.intelligence:com.google.android.apps.wellbeing:com.google.android.apps.dreamliner:com.google.android.apps.safetyhub:com.google.android.dialer:com.google.android.apps.diagnosticstool:com.google.intelligence.sense</string>
+</resources>

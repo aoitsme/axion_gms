@@ -1,0 +1,7 @@
+runtime_resource_overlay {
+    name: "MarkupGoogle_v2OverlaySystemui",
+    theme: "MarkupGoogle_v2OverlaySystemui",
+    certificate: "platform",
+    sdk_version: "current",
+    product_specific: true,
+}

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="config_dreamsDefaultComponent">com.google.android.deskclock/com.android.deskclock.Screensaver</string>
+    <string name="widget_default_class_name">com.android.alarmclock.DigitalAppWidgetProvider</string>
+    <string name="widget_default_package_name">com.google.android.deskclock</string>
+</resources>

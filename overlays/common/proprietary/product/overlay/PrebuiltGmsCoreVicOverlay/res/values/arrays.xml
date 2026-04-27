@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string-array name="config_enabledCredentialProviderService">
+        <item>com.google.android.gms/.auth.api.credentials.credman.service.PasswordAndPasskeyService</item>
+    </string-array>
+    <string-array name="config_ephemeralResolverPackage">
+        <item>com.google.android.gms</item>
+    </string-array>
+    <string-array name="config_primaryCredentialProviderService">
+        <item>com.google.android.gms/.auth.api.credentials.credman.service.PasswordAndPasskeyService</item>
+    </string-array>
+    <string-array name="config_batteryPackageTypeService">
+        <item>com.google.android.gms</item>
+    </string-array>
+    <string-array name="config_locationExtraPackageNames">
+        <item>com.google.android.gms.location.history</item>
+    </string-array>
+</resources>

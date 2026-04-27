@@ -1,6 +1,6 @@
 #!/usr/bin/env -S PYTHONPATH=../../../tools/extract-utils python3
 #
-# SPDX-FileCopyrightText: 2025 AxionAOSP
+# SPDX-FileCopyrightText: 2025-2026 AxionOS
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -24,21 +24,14 @@ from extract_utils.extract_pixel import (
     pixel_firmware_regex,
 )
 
-from extract_utils.file import FileArgs, FileList
-from extract_utils.fixups_blob import (
-    blob_fixup,
-    blob_fixups_user_type,
-)
-
-from extract_utils.fixups_lib import (
-    lib_fixups,
-    lib_fixups_user_type,
-)
-
 from extract_utils.main import (
     ExtractUtils,
     ExtractUtilsModule,
 )
+
+SHARED_OVERLAY_REQUIRED_BY = {
+    "GoogleConfigOverlay": "PrebuiltGmsCoreVic",
+}
 
 def _apktool_cmd(job_count: int | None = None):
     jar = os.environ.get("APKTOOL_JAR")
@@ -201,47 +194,7 @@ def overlay_fixup(path: str, apktool_jobs: int | None = None):
                 new_path = os.path.join(root, new_name)
                 os.rename(old_path, new_path)
                 print(f"Renamed file: {file} -> {new_name}")
-    res_dir = os.path.join(folder, "res")
-    if os.path.exists(res_dir):
-        print(f"{log_prefix} patching XML resource references")
-        for root, _dirs, files in os.walk(res_dir):
-            for file in files:
-                if file.endswith(".xml"):
-                    file_path = os.path.join(root, file)
-                    file_name = os.path.basename(file_path)
-                    with open(file_path, "r", encoding="utf-8") as f:
-                        content = f.read()
-                    if "illo_sim_app_dialog" in file_name:
-                        content = re.sub(r"\$", "", content)
-                        print(f"Removed $ from content in {file_path}")
-                    elif "deferred_setup_welcome_illustration" in file_name:
-                        content = content.replace("$deferred_setup_welcome_illustration__0", "deferred_setup_welcome_illustration__0")
-                        print(f"Replaced specific $ reference in {file_path}")
-                    elif "assistant_icon" in file_name:
-                        content = content.replace("$assistant_icon__0", "assistant_icon__0")
-                        print(f"Replaced specific $ reference in {file_path}")
-                    elif "a11ymenu_intro" in file_name:
-                        content = content.replace("$a11ymenu_intro__0", "a11ymenu_intro__0")
-                        print(f"Replaced specific $ reference in {file_path}")
-                    elif "ic_logo_a11y_assistant" in file_name:
-                        content = content.replace("$ic_logo_a11y_assistant__0", "ic_logo_a11y_assistant__0")
-                        print(f"Replaced specific $ reference in {file_path}")
-                    with open(file_path, "w", encoding="utf-8") as f:
-                        f.write(content)
-    if "SimAppDialogOverlay" in package_name:
-        illo_path = os.path.join(folder, "res", "drawable", "illo_sim_app_dialog.xml")
-        if os.path.exists(illo_path):
-            pass
-    if "PixelSetupWizardOverlay2024" in package_name:
-        deferred_path = os.path.join(folder, "res", "drawable", "deferred_setup_welcome_illustration.xml")
-        if os.path.exists(deferred_path):
-            pass
-        deferred_night_path = os.path.join(folder, "res", "drawable-night", "deferred_setup_welcome_illustration.xml")
-        if os.path.exists(deferred_night_path):
-            pass
-        assistant_path = os.path.join(folder, "res", "drawable", "assistant_icon.xml")
-        if os.path.exists(assistant_path):
-            pass
+    
     bad_xml = os.path.join(folder, "res", "xml", "bookmarks.xml")
     if os.path.exists(bad_xml):
         os.unlink(bad_xml)
@@ -259,102 +212,128 @@ def overlay_fixup(path: str, apktool_jobs: int | None = None):
     print(f"Renamed {decomp_dir} to {target_dir} (now a directory)")
     print(f"Overlay fixup completed for {package_name}. Directory ready at {os.path.isdir(target_dir)}")
     return True
-lib_fixups: lib_fixups_user_type = {}
-blob_fixups: blob_fixups_user_type = {}
+
 extract_fns: extract_fns_user_type = {
     pixel_factory_image_regex: extract_pixel_factory_image,
     pixel_firmware_regex: extract_pixel_firmware,
 }
 
 
-PER_APP_OVERLAYS = {
-    "GoogleDialerOverlay": {
-        "target_pkg": "android",
-        "priority": 1000,
-        "strings": [("config_defaultDialer", "com.google.android.dialer")],
-        "required_by": "GoogleDialer",
-    },
-    "GoogleMessagesOverlay": {
-        "target_pkg": "android",
-        "priority": 1000,
-        "strings": [("config_defaultSms", "com.google.android.apps.messaging")],
-        "required_by": "PrebuiltBugle",
-    },
-    "GoogleContactsOverlay": {
-        "target_pkg": "android",
-        "priority": 1000,
-        "strings": [("config_systemContacts", "com.google.android.contacts")],
-        "required_by": "GoogleContacts",
-    },
-    "VelvetOverlay": {
-        "target_pkg": "android",
-        "priority": 1000,
-        "strings": [("config_defaultAssistant", "com.google.android.googlequicksearchbox")],
-        "required_by": "Velvet",
-    },
-    "GoogleDeskClockOverlay": {
-        "target_pkg": "android",
-        "priority": 1000,
-        "strings": [
-            ("widget_default_package_name", "com.google.android.deskclock"),
+def load_package_mapping():
+    mapping = {}
+    map_file = Path(__file__).parent.parent / "proprietary-pkg-map.txt"
+    if map_file.exists():
+        for line in map_file.read_text().splitlines():
+            if "=" in line:
+                k, v = line.split("=", 1)
+                mapping[k.strip()] = v.strip()
+    return mapping
+
+
+def load_target_redirection_map():
+    mapping = {}
+    map_file = Path(__file__).parent.parent / "proprietary-target-map.txt"
+    if map_file.exists():
+        for line in map_file.read_text().splitlines():
+            if line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            mapping[k.strip()] = v.strip()
+    return mapping
+
+
+def get_dynamic_overlay_specs(mapping: dict[str, str]) -> dict[str, dict[str, object]]:
+    TARGET_PKG_OVERRIDES = {
+        "MarkupGoogle_v2": "com.android.systemui",
+    }
+
+    FALLBACK_TEMPLATES = {
+        "GoogleDialer": [("config_defaultDialer", "{pkg}")],
+        "PrebuiltBugle": [("config_defaultSms", "{pkg}")],
+        "GoogleContacts": [("config_systemContacts", "{pkg}")],
+        "Velvet": [("config_defaultAssistant", "{pkg}")],
+        "talkback": [("config_defaultAccessibilityService", "{pkg}/.TalkBackService")],
+        "MarkupGoogle_v2": [("config_screenshotEditor", "{pkg}/com.google.android.markup.AnnotateActivity")],
+        "WellbeingPrebuilt": [("config_systemWellbeing", "{pkg}")],
+        "PrebuiltDeskClockGoogle_76007351": [
+            ("widget_default_package_name", "{pkg}"),
             ("widget_default_class_name", "com.android.alarmclock.DigitalAppWidgetProvider"),
-            ("config_dreamsDefaultComponent", "com.google.android.deskclock/com.android.deskclock.Screensaver"),
+            ("config_dreamsDefaultComponent", "{pkg}/com.android.deskclock.Screensaver"),
         ],
-        "required_by": "PrebuiltDeskClockGoogle_76007351",
-    },
-    "GoogleTalkbackOverlay": {
+    }
+
+    RESOURCE_NAME_OVERRIDES = {
+        "PrebuiltDeskClockGoogle_76007351": {"widget_default_class_name"},
+    }
+
+    specs = {}
+    
+    gms_markers = [
+        mapping.get("PrebuiltGmsCoreVic", "com.google.android.gms"),
+        mapping.get("Phonesky", "com.android.vending"),
+    ]
+
+    for mod, pkg in mapping.items():
+        overlay_name = f"{mod}Overlay"
+        
+        spec = {
+            "priority": 1000,
+            "required_by": mod,
+            "package_markers": [pkg],
+        }
+        
+        if mod in FALLBACK_TEMPLATES:
+            spec["fallback_strings"] = [
+                (k, v.format(pkg=pkg)) for k, v in FALLBACK_TEMPLATES[mod]
+            ]
+        
+        if mod in RESOURCE_NAME_OVERRIDES:
+            spec["resource_names"] = RESOURCE_NAME_OVERRIDES[mod]
+            
+        specs[overlay_name] = spec
+
+    specs["GmsAndroidOverlay"] = {
         "target_pkg": "android",
         "priority": 1000,
-        "strings": [("config_defaultAccessibilityService", "com.google.android.marvin.talkback/.TalkBackService")],
-        "required_by": "talkback",
-    },
-    "GoogleMarkupOverlay": {
-        "target_pkg": "com.android.systemui",
-        "priority": 1000,
-        "strings": [
-            ("config_screenshotEditor", "com.google.android.markup/com.google.android.markup.AnnotateActivity"),
-        ],
-        "required_by": "MarkupGoogle_v2",
-    },
-    "WellbeingPrebuiltOverlay": {
-        "target_pkg": "android",
-        "priority": 1000,
-        "strings": [
-            ("config_systemWellbeing", "com.google.android.apps.wellbeing"),
-            ("config_defaultWellbeingPackage", "com.google.android.apps.wellbeing"),
-        ],
-        "required_by": "WellbeingPrebuilt",
-    },
-}
+        "required_by": "PrebuiltGmsCoreVic",
+        "package_markers": gms_markers,
+    }
+    
+    return specs
+
+GMS_PACKAGE_MAPPING = load_package_mapping()
+TARGET_REDIRECTION_MAP = load_target_redirection_map()
+DYNAMIC_PER_APP_OVERLAYS = get_dynamic_overlay_specs(GMS_PACKAGE_MAPPING)
+
+def _write_xml_resources(path: Path, elements: list[ET.Element]):
+    root = ET.Element("resources")
+    for element in elements:
+        root.append(element)
+    tree = ET.ElementTree(root)
+    try:
+        ET.indent(tree, space="    ")
+    except AttributeError:
+        pass
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tree.write(path, encoding="utf-8", xml_declaration=True)
 
 
-def synthesize_per_app_overlay(name, spec, overlay_dir_path):
+def synthesize_overlay_module(name, target_pkg, priority, overlay_dir_path):
     out = Path(overlay_dir_path) / name
-    if out.exists():
-        import shutil
-        shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
 
-    pkg = f"com.axion.overlay.{name.lower()}"
+    pkg = f"com.axion.overlay.{name.lower().replace('_', '')}"
     manifest = (
         '<?xml version="1.0" encoding="utf-8"?>\n'
         '<manifest xmlns:android="http://schemas.android.com/apk/res/android"\n'
         f'    package="{pkg}">\n'
         '    <overlay android:isStatic="true"\n'
-        f'        android:priority="{spec["priority"]}"\n'
-        f'        android:targetPackage="{spec["target_pkg"]}"/>\n'
+        f'        android:priority="{priority}"\n'
+        f'        android:targetPackage="{target_pkg}"/>\n'
         '    <application android:hasCode="false"/>\n'
         '</manifest>\n'
     )
     (out / "AndroidManifest.xml").write_text(manifest)
-
-    res_dir = out / "res" / "values"
-    res_dir.mkdir(parents=True, exist_ok=True)
-    body = '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n'
-    for key, val in spec["strings"]:
-        body += f'    <string name="{key}" translatable="false">{val}</string>\n'
-    body += '</resources>\n'
-    (res_dir / "config.xml").write_text(body)
 
     bp = (
         'runtime_resource_overlay {\n'
@@ -366,6 +345,230 @@ def synthesize_per_app_overlay(name, spec, overlay_dir_path):
         '}\n'
     )
     (out / "Android.bp").write_text(bp)
+    return out
+
+
+def _write_fallback_string_resources(out: Path, fallback_strings: list[tuple[str, str]]):
+    resources = []
+    for key, value in fallback_strings:
+        element = ET.Element("string", {"name": key, "translatable": "false"})
+        element.text = value
+        resources.append(element)
+    _write_xml_resources(out / "res" / "values" / "config.xml", resources)
+
+
+def _merge_resource_elements(existing: ET.Element, new: ET.Element):
+    if existing.tag != new.tag:
+        return existing
+
+    if existing.tag == "string":
+        val1 = (existing.text or "").strip()
+        val2 = (new.text or "").strip()
+        if not val2: return existing
+        if not val1:
+            existing.text = val2
+            return existing
+
+        delim = None
+        for d in [";", ":", ","]:
+            if d in val1 or d in val2:
+                delim = d
+                break
+        
+        if delim:
+            parts1 = [p.strip() for p in val1.split(delim) if p.strip()]
+            parts2 = [p.strip() for p in val2.split(delim) if p.strip()]
+            combined = parts1 + [p for p in parts2 if p not in parts1]
+            prefix = delim if val1.startswith(delim) or val2.startswith(delim) else ""
+            suffix = delim if val1.endswith(delim) or val2.endswith(delim) else ""
+            existing.text = prefix + delim.join(combined) + suffix
+    
+    elif "array" in existing.tag:
+        items1 = [i.text for i in existing.findall("item") if i.text]
+        items2 = [i.text for i in new.findall("item") if i.text]
+        for val in items2:
+            if val not in items1:
+                item = ET.SubElement(existing, "item")
+                item.text = val
+                items1.append(val)
+                
+    return existing
+
+
+def _overlay_scalar_owner(name: str, element: ET.Element, overlay_specs: dict[str, dict[str, object]]) -> str | None:
+    text = "".join(element.itertext())
+    is_array = "array" in element.tag
+    item_count = len(element.findall("item")) if is_array else 1
+    
+    matches = []
+    for overlay_name, spec in overlay_specs.items():
+        if overlay_name == "GmsAndroidOverlay":
+            continue
+        if name in spec.get("resource_names", set()):
+            matches.append(overlay_name)
+            continue
+        for marker in spec.get("package_markers", []):
+            if marker in text:
+                matches.append(overlay_name)
+                break
+    matches = list(dict.fromkeys(matches))
+
+    is_collective = False
+    if len(matches) > 1:
+        is_collective = True
+    elif len(matches) == 1:
+        if any(d in text for d in [":", ";", ","]):
+            is_collective = True
+        elif is_array and item_count > 1:
+            is_collective = True
+        elif any(name.endswith(s) for s in ["Packages", "Components", "Apps", "Services"]):
+            is_collective = True
+
+    if is_collective:
+        return "GmsAndroidOverlay"
+
+    if len(matches) == 1:
+        return matches[0]
+
+    gms_markers = DYNAMIC_PER_APP_OVERLAYS["GmsAndroidOverlay"]["package_markers"]
+    if any(m in text for m in gms_markers):
+        return "GmsAndroidOverlay"
+
+    return None
+
+
+def discover_source_overlays(source_path: Path) -> list[Path]:
+    overlay_apks = []
+    for p in ["product/overlay", "vendor/overlay", "system/overlay", "system_ext/overlay"]:
+        dir_path = source_path / p
+        if dir_path.is_dir():
+            overlay_apks.extend(dir_path.glob("*.apk"))
+    return sorted(overlay_apks)
+
+
+def grab_dynamic_overlays(source_path: Path, output_dir: Path, overlay_specs: dict[str, dict[str, object]]):
+    source_overlays = discover_source_overlays(source_path)
+    if not source_overlays:
+        print(f"[grabber] no source overlays found in {source_path}")
+        return []
+
+    print(f"[grabber] discovered {len(source_overlays)} source overlays to grabber")
+    
+    grabbed: dict[tuple[str, str], dict[Path, dict[str, ET.Element]]] = {}
+    
+    for spec in overlay_specs.values():
+        spec.setdefault("resource_names", set())
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        temp_root = Path("/tmp/gms-grabber")
+        if temp_root.exists():
+            shutil.rmtree(temp_root)
+        temp_root.mkdir(parents=True)
+        
+        futures = []
+        for apk in source_overlays:
+            decomp_dir = temp_root / apk.name
+            futures.append(executor.submit(
+                subprocess.check_call,
+                _apktool_cmd(4)[0] + ["d", str(apk), "-o", str(decomp_dir), "-f"]
+            ))
+            
+        for future in as_completed(futures):
+            future.result()
+
+        print(f"[grabber] decompiled all source overlays; scanning for resources")
+        
+        for decomp_dir in sorted(temp_root.iterdir()):
+            default_values_dir = decomp_dir / "res" / "values"
+            if not default_values_dir.exists():
+                continue
+            for xml_path in sorted(default_values_dir.glob("*.xml")):
+                tree = ET.parse(xml_path)
+                for child in tree.getroot():
+                    name = child.attrib.get("name")
+                    if not name:
+                        continue
+                    owner = _overlay_scalar_owner(name, child, overlay_specs)
+                    if owner is not None:
+                        overlay_specs[owner]["resource_names"].add(name)
+
+        for decomp_dir in sorted(temp_root.iterdir()):
+            manifest_path = decomp_dir / "AndroidManifest.xml"
+            target_pkg = "android"
+            if manifest_path.exists():
+                tree = ET.parse(manifest_path)
+                overlay_elem = tree.getroot().find('overlay')
+                if overlay_elem is not None:
+                    target_pkg = overlay_elem.get('{http://schemas.android.com/apk/res/android}targetPackage', "android")
+
+            target_pkg = TARGET_REDIRECTION_MAP.get(target_pkg, target_pkg)
+
+            res_dir = decomp_dir / "res"
+            if not res_dir.exists():
+                continue
+            for xml_path in sorted(res_dir.glob("values/*.xml")):
+                if xml_path.name == "public.xml":
+                    continue
+                tree = ET.parse(xml_path)
+                rel_path = xml_path.relative_to(decomp_dir)
+                for child in list(tree.getroot()):
+                    name = child.attrib.get("name")
+                    if not name:
+                        continue
+                    owner = _overlay_scalar_owner(name, child, overlay_specs)
+                    if owner is not None:
+                        key = (owner, target_pkg)
+                        target_bucket = grabbed.setdefault(key, {})
+                        file_bucket = target_bucket.setdefault(rel_path, {})
+                        new_el = ET.fromstring(ET.tostring(child, encoding="unicode"))
+                        if owner == "GmsAndroidOverlay" and name in file_bucket:
+                            _merge_resource_elements(file_bucket[name], new_el)
+                        elif name not in file_bucket:
+                            file_bucket[name] = new_el
+
+        shutil.rmtree(temp_root)
+
+    generated_map: dict[str, list[str]] = {}
+    
+    if output_dir.exists():
+        shutil.rmtree(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for (owner, target_pkg), resource_map in grabbed.items():
+        required_by = overlay_specs[owner]["required_by"]
+        
+        if target_pkg == "android":
+            overlay_name = owner
+        else:
+            suffix = target_pkg.split(".")[-1].capitalize()
+            overlay_name = f"{owner}{suffix}"
+            
+        out = synthesize_overlay_module(overlay_name, target_pkg, 1000, output_dir)
+        for rel_path, elements_dict in resource_map.items():
+            _write_xml_resources(out / rel_path, list(elements_dict.values()))
+            
+        generated_map.setdefault(required_by, []).append(overlay_name)
+        print(f"[grabber] synthesized {overlay_name} targeting {target_pkg} (files={len(resource_map)})")
+
+    for owner, spec in overlay_specs.items():
+        required_by = spec["required_by"]
+        if required_by not in generated_map and spec.get("fallback_strings"):
+            out = synthesize_overlay_module(owner, "android", 1000, output_dir)
+            _write_fallback_string_resources(out, spec["fallback_strings"])
+            generated_map.setdefault(required_by, []).append(owner)
+            print(f"[grabber] used fallbacks for {owner}")
+            
+    return generated_map
+
+
+def required_overlay_specs(per_app_overlay_specs: dict[str, dict[str, object]]) -> dict[str, dict[str, object]]:
+    specs = {
+        overlay_name: {"required_by": required_by}
+        for overlay_name, required_by in SHARED_OVERLAY_REQUIRED_BY.items()
+    }
+    for overlay_name, spec in per_app_overlay_specs.items():
+        specs[overlay_name] = {"required_by": spec["required_by"]}
+    return specs
 
 
 def _replace_or_add_list_property(block: str, property_name: str, values: list[str]) -> str:
@@ -402,46 +605,40 @@ def _find_android_app_import_block(content: str, module_name: str) -> tuple[int,
         cursor = block_end
 
 
-def update_required_modules(common_bp_path: Path, per_app_overlays: dict[str, dict[str, object]]):
+def update_required_modules(common_bp_path: Path, generated_map: dict[str, list[str]]):
     if not common_bp_path.exists():
         print(f"Blueprint {common_bp_path} not found; skipping required wiring.")
         return
 
-    print(
-        f"[overlay] update_required_modules start: "
-        f"path={common_bp_path}, modules={len(per_app_overlays)}"
-    )
+    print(f"[overlay] update_required_modules path={common_bp_path}")
     content = common_bp_path.read_text(encoding="utf-8")
-    for index, (overlay_name, spec) in enumerate(per_app_overlays.items(), start=1):
-        module_name = spec["required_by"]
-        print(
-            f"[overlay] required wiring {index}/{len(per_app_overlays)}: "
-            f"overlay={overlay_name}, module={module_name}"
-        )
+    
+    all_known_overlays = set()
+    for overlays in generated_map.values():
+        all_known_overlays.update(overlays)
+    
+    for module_name, overlay_names in generated_map.items():
         block_info = _find_android_app_import_block(content, module_name)
         if block_info is None:
-            print(f"Module {module_name} not found in {common_bp_path}; skipping required wiring for {overlay_name}.")
             continue
 
         block_start, block_end, block = block_info
         required_match = re.search(r"(?ms)^    required:\s*\[\n(.*?)^    \],\n", block)
         if required_match:
             required = re.findall(r'"([^"]+)"', required_match.group(1))
-            print(f"[overlay] existing required list for {module_name}: {required}")
         else:
             required = []
-            print(f"[overlay] no existing required list for {module_name}")
-        if overlay_name not in required:
-            required.append(overlay_name)
-            print(f"[overlay] appended {overlay_name} to {module_name}")
-        else:
-            print(f"[overlay] {overlay_name} already present in {module_name}")
-        updated_block = _replace_or_add_list_property(block, "required", required)
+            
+        required = [r for r in required if not (r.endswith("Overlay") and (r in all_known_overlays or r == module_name + "Overlay"))]
+        
+        for name in overlay_names:
+            if name not in required:
+                required.append(name)
+                
+        updated_block = _replace_or_add_list_property(block, "required", sorted(list(set(required))))
         content = content[:block_start] + updated_block + content[block_end:]
 
-    print(f"[overlay] writing updated required wiring to {common_bp_path}")
     common_bp_path.write_text(content, encoding="utf-8")
-    print(f"Updated required overlays in {common_bp_path}")
 
 
 CLI_OPTIONS_WITH_VALUE = {
@@ -517,218 +714,76 @@ def _resolve_source(argv, device: str) -> str | None:
             if source.name == "extracted":
                 inner = _find_inner_extracted_dir(source, device)
                 if inner is not None:
-                    print(f"[source] using extracted inner dir: {inner}")
                     return str(inner)
         return str(source)
 
     cached = _find_cached_source(device)
     if cached is not None:
-        print(f"[source] using cached extracted dir: {cached}")
         return str(cached)
 
     return None
 
 
-def _env_int(name: str) -> int | None:
-    value = os.environ.get(name)
-    if not value:
-        return None
-    try:
-        parsed = int(value)
-    except ValueError:
-        print(f"[overlay] ignoring invalid integer for {name}: {value}")
-        return None
-    if parsed < 1:
-        print(f"[overlay] ignoring non-positive integer for {name}: {value}")
-        return None
-    return parsed
-
-
-def _available_threads() -> int:
-    try:
-        return max(1, len(os.sched_getaffinity(0)))
-    except AttributeError:
-        return max(1, os.cpu_count() or 1)
-
-
-def _overlay_parallelism(apk_count: int) -> tuple[int, int]:
-    available_threads = _available_threads()
-    total_jobs = _env_int("OVERLAY_TOTAL_JOBS") or available_threads
-    worker_jobs = _env_int("OVERLAY_FIXUP_JOBS")
-    apktool_jobs = _env_int("APKTOOL_JOBS")
-
-    if worker_jobs is None:
-        # Keep several APKs in flight without oversubscribing a typical machine.
-        worker_jobs = min(apk_count, max(1, total_jobs // 4))
-    else:
-        worker_jobs = min(apk_count, worker_jobs)
-
-    if apktool_jobs is None:
-        apktool_jobs = max(1, total_jobs // max(1, worker_jobs))
-
-    return worker_jobs, apktool_jobs
-
 if __name__ == "__main__":
     parser = ArgumentParser()
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    from fetch_factory import fetch_apktool_jar, fetch_latest_bp4a_factory
+    from fetch_factory import fetch_apktool_jar, fetch_latest_factory
     if not os.environ.get("APKTOOL_JAR"):
         try:
             os.environ["APKTOOL_JAR"] = fetch_apktool_jar()
         except Exception as e:
             print(f"[fetch] apktool auto-fetch failed ({e}); falling back to system apktool")
+
+    source = None
     if "--fetch" in sys.argv:
-        sys.argv.remove("--fetch")
-        sys.argv.append(fetch_latest_bp4a_factory())
+        idx = sys.argv.index("--fetch")
+        sys.argv.pop(idx)
+        release = "bp4a"
+        if idx < len(sys.argv) and not sys.argv[idx].startswith("-"):
+            release = sys.argv.pop(idx)
+        source = fetch_latest_factory(release=release)
     else:
         source = _resolve_source(sys.argv, os.environ.get("FETCH_DEVICE", "caiman"))
-        if source is not None and source not in sys.argv[1:]:
-            sys.argv.append(source)
+
+    if source is not None and source not in sys.argv:
+        sys.argv.append(source)
+
     DEVICE = "common"
     VENDOR = "gms/overlays"
     module = ExtractUtilsModule(
         DEVICE,
         VENDOR,
         device_rel_path=f"vendor/{VENDOR}",
-        blob_fixups=blob_fixups,
-        lib_fixups=lib_fixups,
+        blob_fixups={},
+        lib_fixups={},
         extract_fns=extract_fns,
     )
     utils = ExtractUtils.device(module)
     utils.run()
+
+    for stale in ["common/common-vendor.mk", "common/Android.mk", "common/Android.bp", "common/BoardConfigVendor.mk"]:
+        stale_path = Path(stale)
+        if stale_path.exists():
+            stale_path.unlink()
+    stale_dir = Path("common")
+    if stale_dir.exists() and not any(stale_dir.iterdir()):
+        stale_dir.rmdir()
+
     overlay_dir = Path(f"{DEVICE}/proprietary/product/overlay")
-    if overlay_dir.exists():
-        apk_paths = sorted(overlay_dir.glob("*.apk"))
-        print(f"[overlay] found {len(apk_paths)} extracted overlay APKs in {overlay_dir}")
-        worker_jobs, apktool_jobs = _overlay_parallelism(len(apk_paths)) if apk_paths else (1, 1)
-        detected_threads = _available_threads()
-        print(
-            f"[overlay] parallel fixup config: workers={worker_jobs}, "
-            f"apktool_jobs={apktool_jobs}, detected_threads={detected_threads}, "
-            f"total_cpu_budget={_env_int('OVERLAY_TOTAL_JOBS') or detected_threads}"
+    overlay_dir.mkdir(parents=True, exist_ok=True)
+    
+    source_path = Path(source) if source else None
+    if source_path:
+        generated_map = grab_dynamic_overlays(source_path, overlay_dir, DYNAMIC_PER_APP_OVERLAYS)
+        update_required_modules(
+            Path("..") / DEVICE / "Android.bp",
+            generated_map,
         )
-        failed_apks = []
-        if worker_jobs <= 1 or len(apk_paths) <= 1:
-            for index, apk_path in enumerate(apk_paths, start=1):
-                print(f"[overlay] fixup {index}/{len(apk_paths)}: {apk_path.name}")
-                if not overlay_fixup(str(apk_path), apktool_jobs):
-                    failed_apks.append(apk_path.name)
-        else:
-            with ThreadPoolExecutor(max_workers=worker_jobs) as executor:
-                future_to_name = {}
-                for index, apk_path in enumerate(apk_paths, start=1):
-                    print(f"[overlay] queue fixup {index}/{len(apk_paths)}: {apk_path.name}")
-                    future = executor.submit(overlay_fixup, str(apk_path), apktool_jobs)
-                    future_to_name[future] = apk_path.name
-                completed = 0
-                for future in as_completed(future_to_name):
-                    completed += 1
-                    apk_name = future_to_name[future]
-                    ok = future.result()
-                    print(f"[overlay] completed fixup {completed}/{len(apk_paths)}: {apk_name} (ok={ok})")
-                    if not ok:
-                        failed_apks.append(apk_name)
-        if failed_apks:
-            print(f"[overlay] failed overlay fixups: {', '.join(failed_apks)}")
-            sys.exit(1)
-        overlay_dir.mkdir(parents=True, exist_ok=True)
-        per_app_items = list(PER_APP_OVERLAYS.items())
-        print(f"[overlay] synthesizing {len(per_app_items)} per-app overlays")
-        for index, (name, spec) in enumerate(per_app_items, start=1):
-            print(
-                f"[overlay] synthesize {index}/{len(per_app_items)}: "
-                f"{name} -> {spec['required_by']}"
-            )
-            synthesize_per_app_overlay(name, spec, str(overlay_dir))
-            print(f"Synthesized per-app overlay: {name} (required_by={spec['required_by']})")
-        print(f"[overlay] updating required module wiring in ../{DEVICE}/Android.bp")
-        update_required_modules(Path("..") / DEVICE / "Android.bp", PER_APP_OVERLAYS)
+
+    for stray_apk in overlay_dir.glob("*.apk"):
+        print(f"[cleanup] removing stray APK: {stray_apk.name}")
+        stray_apk.unlink()
+
     bp_path = Path("Android.bp")
     if bp_path.exists():
         bp_path.unlink()
-    product_mk = Path(f"{DEVICE}/{DEVICE}-vendor.mk")
-    if not product_mk.exists():
-        print(f"Makefiles {product_mk} not found; manual addition may be needed.")
-    else:
-        overlay_dirs = sorted(
-            d.name
-            for d in overlay_dir.iterdir()
-            if (
-                d.is_dir()
-                and not d.name.endswith(".apk_decomp")
-                and d.name not in PER_APP_OVERLAYS
-            )
-        )
-        print(f"[overlay] preparing makefile update with {len(overlay_dirs)} overlay directories")
-
-        OVERLAY_GATES = {
-            "GoogleConfigOverlay": "gms",
-        }
-
-        with open(product_mk, "r", encoding="utf-8") as f:
-            original = f.read()
-
-        src_lines = original.splitlines()
-        cut = None
-        for i, line in enumerate(src_lines):
-            if line.lstrip().startswith("PRODUCT_PACKAGES +="):
-                j = i - 1
-                while j >= 0 and not src_lines[j].strip():
-                    j -= 1
-                if (
-                    j >= 0
-                    and src_lines[j].lstrip().startswith(("ifneq", "ifeq"))
-                    and ("TARGET_CORE_GMS" in src_lines[j] or "TARGET_GAPPS_VARIANT" in src_lines[j])
-                ):
-                    cut = j
-                    print(
-                        f"[overlay] found existing gated PRODUCT_PACKAGES block at line {i + 1}, "
-                        f"rewinding cut to condition line {j + 1}"
-                    )
-                else:
-                    cut = i
-                    print(f"[overlay] found existing PRODUCT_PACKAGES block at line {i + 1}")
-                break
-        if cut is not None:
-            print(f"[overlay] trimming existing generated package section from line {cut + 1}")
-            src_lines = src_lines[:cut]
-        trimmed_blank_lines = 0
-        while src_lines and not src_lines[-1].strip():
-            src_lines.pop()
-            trimmed_blank_lines += 1
-        if trimmed_blank_lines:
-            print(f"[overlay] removed {trimmed_blank_lines} trailing blank line(s) before regenerating body")
-        head = "\n".join(src_lines)
-
-        if "TARGET_GAPPS_VARIANT" not in head:
-            print("[overlay] TARGET_GAPPS_VARIANT block missing, injecting default variant logic")
-            head += "\n\nTARGET_GAPPS_VARIANT ?= gms"
-            head += "\nifeq ($(strip $(TARGET_CORE_GMS)),true)"
-            head += "\nTARGET_GAPPS_VARIANT := core"
-            head += "\nendif"
-
-        VARIANT_COND = {
-            "pico": "ifeq ($(strip $(TARGET_GAPPS_VARIANT)),pico)",
-            "core": "ifneq ($(strip $(TARGET_GAPPS_VARIANT)),pico)",
-            "gms": "ifeq ($(strip $(TARGET_GAPPS_VARIANT)),gms)",
-        }
-
-        body = ""
-        for index, d in enumerate(overlay_dirs, start=1):
-            gate = OVERLAY_GATES.get(d)
-            gate_label = gate if gate is not None else "always"
-            print(f"[overlay] package entry {index}/{len(overlay_dirs)}: {d} (gate={gate_label})")
-            if gate is None:
-                body += f"\n\nPRODUCT_PACKAGES += {d}"
-            else:
-                cond = VARIANT_COND[gate]
-                body += f"\n\n{cond}\nPRODUCT_PACKAGES += {d}\nendif"
-
-        with open(product_mk, "w", encoding="utf-8") as f:
-            f.write(head + body + "\n")
-
-        counts = {"always": 0}
-        for d in overlay_dirs:
-            counts[OVERLAY_GATES.get(d, "always")] = counts.get(OVERLAY_GATES.get(d, "always"), 0) + 1
-        summary = ", ".join(f"{k}={v}" for k, v in counts.items() if v)
-        print(f"Updated {product_mk}: {summary}")

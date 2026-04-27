@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="pearl_action">com.google.android.apps.pixel.agent.app.suw.SET_UP</string>
-    <string name="pearl_package">com.google.android.apps.pixel.agent</string>
-</resources>

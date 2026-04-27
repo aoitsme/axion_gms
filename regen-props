@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#
+# SPDX-FileCopyrightText: 2025-2026 AxionOS
+# SPDX-License-Identifier: Apache-2.0
+#
+
+set -e
+
+RELEASE="bp4a"
+if [[ -n "$1" ]]; then
+    RELEASE="$1"
+fi
+
+echo "[regen-props] Updating SetupWizard, Pixel, and OPA properties for release: $RELEASE"
+./extract-files.py --only-props --fetch "$RELEASE"
+
+echo "[regen-props] Property update complete."

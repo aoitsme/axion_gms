@@ -1,0 +1,2 @@
+# OEM Target Package=AOSP Target Package
+com.google.android.devicelockcontroller=com.android.devicelockcontroller

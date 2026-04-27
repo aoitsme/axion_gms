@@ -91,11 +91,11 @@ android_app_import {
         "Contacts",
         "Contacts2",
     ],
+    preprocessed: true,
+    presigned: true,
     required: [
         "GoogleContactsOverlay",
     ],
-    preprocessed: true,
-    presigned: true,
     dex_preopt: {
         enabled: false,
     },
@@ -111,6 +111,9 @@ android_app_import {
     ],
     preprocessed: true,
     presigned: true,
+    required: [
+        "LatinIMEGooglePrebuiltOverlay",
+    ],
     dex_preopt: {
         enabled: false,
     },
@@ -121,11 +124,12 @@ android_app_import {
     name: "MarkupGoogle_v2",
     owner: "gms",
     apk: "proprietary/product/app/MarkupGoogle_v2/MarkupGoogle_v2.apk",
-    required: [
-        "GoogleMarkupOverlay",
-    ],
     preprocessed: true,
     presigned: true,
+    required: [
+        "MarkupGoogle_v2Overlay",
+        "MarkupGoogle_v2OverlaySystemui",
+    ],
     dex_preopt: {
         enabled: false,
     },
@@ -136,11 +140,11 @@ android_app_import {
     name: "talkback",
     owner: "gms",
     apk: "proprietary/product/app/talkback/talkback.apk",
-    required: [
-        "GoogleTalkbackOverlay",
-    ],
     preprocessed: true,
     presigned: true,
+    required: [
+        "talkbackOverlay",
+    ],
     dex_preopt: {
         enabled: false,
     },
@@ -153,6 +157,9 @@ android_app_import {
     apk: "proprietary/product/priv-app/AndroidAutoStubPrebuilt/AndroidAutoStubPrebuilt.apk",
     preprocessed: true,
     presigned: true,
+    required: [
+        "AndroidAutoStubPrebuiltOverlay",
+    ],
     dex_preopt: {
         enabled: false,
     },
@@ -167,9 +174,6 @@ android_app_import {
     overrides: [
         "Dialer",
     ],
-    required: [
-        "GoogleDialerOverlay",
-    ],
     preprocessed: true,
     presigned: true,
     dex_preopt: {
@@ -177,6 +181,13 @@ android_app_import {
     },
     privileged: true,
     product_specific: true,
+    required: [
+        "GoogleDialerOverlay",
+        "GoogleDialerOverlayPhone",
+        "GoogleDialerOverlayTelecom",
+        "com.google.android.dialer.support",
+        "org.carconnectivity.android.digitalkey.timesync",
+    ],
 }
 
 android_app_import {
@@ -247,11 +258,11 @@ android_app_import {
     overrides: [
         "messaging",
     ],
-    required: [
-        "GoogleMessagesOverlay",
-    ],
     preprocessed: true,
     presigned: true,
+    required: [
+        "PrebuiltBugleOverlay",
+    ],
     dex_preopt: {
         enabled: false,
     },
@@ -266,11 +277,11 @@ android_app_import {
     overrides: [
         "DeskClock",
     ],
-    required: [
-        "GoogleDeskClockOverlay",
-    ],
     preprocessed: true,
     presigned: true,
+    required: [
+        "PrebuiltDeskClockGoogle_76007351Overlay",
+    ],
     dex_preopt: {
         enabled: false,
     },
@@ -457,6 +468,19 @@ android_app_import {
     },
     privileged: true,
     product_specific: true,
+    required: [
+        "GmsAndroidOverlay",
+        "GmsAndroidOverlayDevicelockcontroller",
+        "GmsAndroidOverlaySettings",
+        "GmsAndroidOverlaySystemui",
+        "PrebuiltGmsCoreVicOverlay",
+        "PrebuiltGmsCoreVicOverlayContacts",
+        "PrebuiltGmsCoreVicOverlayPhone",
+        "PrebuiltGmsCoreVicOverlaySettings",
+        "PrebuiltGmsCoreVicOverlaySystemui",
+        "com.google.android.dialer.support",
+        "org.carconnectivity.android.digitalkey.timesync",
+    ],
 }
 
 android_app_import {
@@ -482,11 +506,11 @@ android_app_import {
     overrides: [
         "QuickSearchBox",
     ],
+    preprocessed: true,
+    presigned: true,
     required: [
         "VelvetOverlay",
     ],
-    preprocessed: true,
-    presigned: true,
     dex_preopt: {
         enabled: false,
     },
@@ -498,11 +522,11 @@ android_app_import {
     name: "WellbeingPrebuilt",
     owner: "gms",
     apk: "proprietary/product/priv-app/WellbeingPrebuilt/WellbeingPrebuilt.apk",
+    preprocessed: true,
+    presigned: true,
     required: [
         "WellbeingPrebuiltOverlay",
     ],
-    preprocessed: true,
-    presigned: true,
     dex_preopt: {
         enabled: false,
     },
@@ -581,4 +605,69 @@ dex_import {
         "proprietary/system_ext/framework/org.carconnectivity.android.digitalkey.timesync.jar",
     ],
     system_ext_specific: true,
+}
+
+phony {
+    name: "GmsCore",
+    required: [
+        "PrebuiltGmsCoreVic",
+        "PrebuiltGmsCoreVic_AdsDynamite",
+        "PrebuiltGmsCoreVic_CronetDynamite",
+        "PrebuiltGmsCoreVic_DynamiteLoader",
+        "PrebuiltGmsCoreVic_DynamiteModulesA",
+        "PrebuiltGmsCoreVic_DynamiteModulesC",
+        "PrebuiltGmsCoreVic_GoogleCertificates",
+        "PrebuiltGmsCoreVic_MapsDynamite",
+        "PrebuiltGmsCoreVic_MeasurementDynamite",
+        "TfliteDynamitePrebuilt",
+        "VisionBarcodePrebuilt",
+    ],
+}
+
+phony {
+    name: "GmsCoreMain",
+    required: [
+        "AndroidPlatformServices",
+        "GmsCore",
+        "GoogleExtShared",
+        "GoogleFeedback",
+        "GoogleServicesFramework",
+        "MlkitBarcodeUIPrebuilt",
+        "Phonesky",
+    ],
+}
+
+phony {
+    name: "GmsCoreAndroid",
+    required: [
+        "AndroidAutoStubPrebuilt",
+        "CccDkTimeSyncService",
+        "DocumentsUIGoogle",
+        "GmsCoreMain",
+        "GoogleOneTimeInitializer",
+        "GoogleRestorePrebuilt",
+        "LatinIMEGooglePrebuilt",
+        "PartnerSetupPrebuilt",
+        "SetupWizardPixelPrebuilt_v802960446",
+        "SetupWizardPrebuilt_v811313066",
+        "TagGoogle",
+        "WellbeingPrebuilt",
+        "org.carconnectivity.android.digitalkey.timesync",
+    ],
+}
+
+phony {
+    name: "GmsCoreFull",
+    required: [
+        "CalculatorGooglePrebuilt_85006267",
+        "CalendarGooglePrebuilt",
+        "GmsCoreAndroid",
+        "GoogleContacts",
+        "GoogleDialer",
+        "MarkupGoogle_v2",
+        "PrebuiltBugle",
+        "PrebuiltDeskClockGoogle_76007351",
+        "Velvet",
+        "talkback",
+    ],
 }

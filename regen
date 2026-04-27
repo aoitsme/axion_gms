@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#
+# SPDX-FileCopyrightText: 2025-2026 AxionOS
+# SPDX-License-Identifier: Apache-2.0
+#
+
+set -e
+
+ARGS=()
+FETCH_ARG=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -*)
+            ARGS+=("$1")
+            shift
+            ;;
+        *)
+            # Treat first positional arg as release name for fetch
+            if [[ -z "$FETCH_ARG" ]]; then
+                FETCH_ARG="$1"
+            else
+                ARGS+=("$1")
+            fi
+            shift
+            ;;
+    esac
+done
+
+FINAL_ARGS=("${ARGS[@]}")
+if [[ -n "$FETCH_ARG" ]]; then
+    FINAL_ARGS=("--fetch" "$FETCH_ARG" "${ARGS[@]}")
+fi
+
+# 1. Fetch/Update GMS binaries and Package Map
+echo "[regen] Stage 1: Updating GMS binaries and package mapping..."
+./extract-files.py "${FINAL_ARGS[@]}"
+
+# 2. Grab and synthesize resource overlays
+echo "[regen] Stage 2: Harvesting and synthesizing dynamic overlays..."
+pushd overlays > /dev/null
+# Pass the same fetch arguments to grabber to ensure same source
+PYTHONPATH=../../../tools/extract-utils ./extract-files.py "${FINAL_ARGS[@]}"
+popd > /dev/null
+
+echo "[regen] Full regeneration complete."

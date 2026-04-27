@@ -22,36 +22,6 @@ android_app_import {
 }
 
 android_app_import {
-    name: "DocumentsUIGoogle",
-    owner: "gms",
-    apk: "proprietary/system/priv-app/DocumentsUIGoogle/DocumentsUIGoogle.apk",
-    overrides: [
-        "DocumentsUI",
-    ],
-    preprocessed: true,
-    presigned: true,
-    dex_preopt: {
-        enabled: false,
-    },
-    privileged: true,
-}
-
-android_app_import {
-    name: "TagGoogle",
-    owner: "gms",
-    apk: "proprietary/system/priv-app/TagGoogle/TagGoogle.apk",
-    overrides: [
-        "Tag",
-    ],
-    preprocessed: true,
-    presigned: true,
-    dex_preopt: {
-        enabled: false,
-    },
-    privileged: true,
-}
-
-android_app_import {
     name: "CalculatorGooglePrebuilt_85006267",
     owner: "gms",
     apk: "proprietary/product/app/CalculatorGooglePrebuilt_85006267/CalculatorGooglePrebuilt_85006267.apk",
@@ -642,7 +612,6 @@ phony {
     required: [
         "AndroidAutoStubPrebuilt",
         "CccDkTimeSyncService",
-        "DocumentsUIGoogle",
         "GmsCoreMain",
         "GoogleOneTimeInitializer",
         "GoogleRestorePrebuilt",
@@ -650,7 +619,6 @@ phony {
         "PartnerSetupPrebuilt",
         "SetupWizardPixelPrebuilt_v802960446",
         "SetupWizardPrebuilt_v811313066",
-        "TagGoogle",
         "WellbeingPrebuilt",
         "org.carconnectivity.android.digitalkey.timesync",
     ],

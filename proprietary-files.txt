@@ -16,9 +16,6 @@ product/app/CalendarGooglePrebuilt/CalendarGooglePrebuilt.apk;OVERRIDES=Calendar
 # Clock (gms)
 product/priv-app/PrebuiltDeskClockGoogle_76007351/PrebuiltDeskClockGoogle_76007351.apk;OVERRIDES=DeskClock;PRESIGNED
 
-# Files (core+gms)
-system/priv-app/DocumentsUIGoogle/DocumentsUIGoogle.apk;OVERRIDES=DocumentsUI;PRESIGNED
-
 # Google Search (gms)
 product/priv-app/Velvet/Velvet.apk;OVERRIDES=QuickSearchBox;PRESIGNED
 
@@ -98,9 +95,6 @@ product/etc/sysconfig/preinstalled_packages_repair_mode.xml
 product/etc/sysconfig/google.xml
 product/etc/sysconfig/google_build.xml
 product/etc/sysconfig/contextual_search.xml
-
-# Tags (core+gms)
-system/priv-app/TagGoogle/TagGoogle.apk;OVERRIDES=Tag;PRESIGNED
 
 # TTS
 product/tts/google/de-de/de-de-x-multi-r60.zvoice

@@ -37,73 +37,62 @@ module = ExtractUtilsModule(
     extract_fns=extract_fns,
 )
 
-GMS_PHONY_MODULES = """
-phony {
-    name: "GmsCore",
-    required: [
-        "PrebuiltGmsCoreVic",
-        "PrebuiltGmsCoreVic_AdsDynamite",
-        "PrebuiltGmsCoreVic_CronetDynamite",
-        "PrebuiltGmsCoreVic_DynamiteLoader",
-        "PrebuiltGmsCoreVic_DynamiteModulesA",
-        "PrebuiltGmsCoreVic_DynamiteModulesC",
-        "PrebuiltGmsCoreVic_GoogleCertificates",
-        "PrebuiltGmsCoreVic_MapsDynamite",
-        "PrebuiltGmsCoreVic_MeasurementDynamite",
-        "TfliteDynamitePrebuilt",
-        "VisionBarcodePrebuilt",
-    ],
-}
+GMS_PHONY_BUNDLE_FILE = "propietary-pkgs-bundle.txt"
 
-phony {
-    name: "GmsCoreMain",
-    required: [
-        "AndroidPlatformServices",
-        "GmsCore",
-        "GoogleExtShared",
-        "GoogleFeedback",
-        "GoogleServicesFramework",
-        "MlkitBarcodeUIPrebuilt",
-        "Phonesky",
-    ],
-}
 
-phony {
-    name: "GmsCoreAndroid",
-    required: [
-        "AccessibilityMenu",
-        "AndroidAutoStubPrebuilt",
-        "CccDkTimeSyncService",
-        "DocumentsUIGoogle",
-        "GmsCoreMain",
-        "GoogleOneTimeInitializer",
-        "GooglePrintRecommendationService",
-        "GoogleRestorePrebuilt",
-        "LatinIMEGooglePrebuilt",
-        "PartnerSetupPrebuilt",
-        "SetupWizardPixelPrebuilt_v802960446",
-        "SetupWizardPrebuilt_v811313066",
-        "TagGoogle",
-        "WellbeingPrebuilt",
-    ],
-}
+def load_phony_bundles(root_dir: Path) -> dict[str, list[str]]:
+    bundle_file = root_dir / GMS_PHONY_BUNDLE_FILE
+    bundles: dict[str, list[str]] = {}
+    current_bundle: str | None = None
 
-phony {
-    name: "GmsCoreFull",
-    required: [
-        "CalculatorGooglePrebuilt_85006267",
-        "CalendarGooglePrebuilt",
-        "GmsCoreAndroid",
-        "GoogleContacts",
-        "GoogleDialer",
-        "MarkupGoogle_v2",
-        "PrebuiltBugle",
-        "PrebuiltDeskClockGoogle_76007351",
-        "Velvet",
-        "talkback",
-    ],
-}
-"""
+    if not bundle_file.exists():
+        return bundles
+
+    for raw_line in bundle_file.read_text().splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+
+        if line.startswith("[") and line.endswith("]"):
+            current_bundle = line[1:-1].strip()
+            if current_bundle:
+                bundles.setdefault(current_bundle, [])
+            continue
+
+        if current_bundle is None:
+            continue
+
+        dep = line.split("#", 1)[0].strip()
+        if dep:
+            bundles[current_bundle].append(dep)
+
+    return {name: deps for name, deps in bundles.items() if deps}
+
+
+def render_phony_modules(bundles: dict[str, list[str]]) -> str:
+    out = []
+    for name, deps in bundles.items():
+        out.append('phony {')
+        out.append(f'    name: "{name}",')
+        out.append('    required: [')
+        for dep in deps:
+            out.append(f'        "{dep}",')
+        out.append('    ],')
+        out.append('}')
+        out.append('')
+    return "\n".join(out).rstrip() + "\n"
+
+
+def sync_phony_modules(bp_path: Path, bundles: dict[str, list[str]]):
+    if not bp_path.exists() or not bundles:
+        return
+
+    content = bp_path.read_text()
+    content = re.sub(r'\n?phony \{\n.*?\n\}\n?', "\n", content, flags=re.DOTALL)
+    content = content.rstrip() + "\n\n" + render_phony_modules(bundles)
+    bp_path.write_text(content)
+    print(f"[gms] synced phony modules from {GMS_PHONY_BUNDLE_FILE} into {bp_path}")
+
 
 def auto_update_package_mapping(root_dir: Path):
     mapping = {}
@@ -223,11 +212,12 @@ def _find_android_app_import_block(content: str, module_name: str) -> tuple[int,
         cursor = block_end
 
 
-def prune_required_dependencies(bp_path: Path):
+def prune_required_dependencies(bp_path: Path, extra_allowed: set[str] | None = None):
     if not bp_path.exists():
         return
 
     content = bp_path.read_text()
+    extra_allowed = extra_allowed or set()
     
     defined_modules = set(re.findall(r'name: "([^"]+)"', content))
     
@@ -243,7 +233,10 @@ def prune_required_dependencies(bp_path: Path):
         suffix = match.group(3)
         
         items = re.findall(r'"([^"]+)"', items_str)
-        valid_items = [i for i in items if i in defined_modules or i.startswith("GmsCore")]
+        valid_items = [
+            i for i in items
+            if i in defined_modules or i in extra_allowed or i.startswith("GmsCore")
+        ]
         
         if not valid_items:
             return ""
@@ -336,19 +329,16 @@ def post_regenerate_customizations(source_path: Path | None = None):
         content = re.sub(r'TARGET_DEVICE', 'TARGET_ARCH', content)
         ANDROIDMK.write_text(content)
 
-    if ANDROIDBP.exists():
-        content = ANDROIDBP.read_text()
-        if 'name: "GmsCoreMain"' not in content:
-            with open(ANDROIDBP, "a") as f:
-                f.write(GMS_PHONY_MODULES)
-            print(f"[gms] restored phony modules to {ANDROIDBP}")
+    phony_bundles = load_phony_bundles(MY_DIR)
+    sync_phony_modules(ANDROIDBP, phony_bundles)
 
     required_map = load_required_map(MY_DIR)
     inject_required_dependencies(ANDROIDBP, required_map)
 
     auto_update_package_mapping(MY_DIR)
 
-    prune_required_dependencies(ANDROIDBP)
+    phony_deps = {dep for deps in phony_bundles.values() for dep in deps}
+    prune_required_dependencies(ANDROIDBP, phony_deps)
 
     if source_path:
         grab_gms_properties(source_path, MY_DIR)
@@ -377,11 +367,23 @@ def post_regenerate_customizations(source_path: Path | None = None):
     out += 'TARGET_GAPPS_VARIANT ?= gms\n\n'
     out += '# Map GMS variant to Soong phony modules\n'
     out += 'ifeq ($(strip $(TARGET_GAPPS_VARIANT)),pico)\n'
-    out += '    PRODUCT_PACKAGES += GmsCoreMain\n'
+    out += '    PRODUCT_PACKAGES += PicoPkgs\n'
+    out += '    TARGET_INCLUDE_GOOGLE_TELECOMM ?= false\n'
+    out += '    TARGET_INCLUDE_PARTNER_SETUP ?= false\n'
     out += 'else ifeq ($(strip $(TARGET_GAPPS_VARIANT)),core)\n'
-    out += '    PRODUCT_PACKAGES += GmsCoreAndroid\n'
+    out += '    PRODUCT_PACKAGES += CorePkgs\n'
+    out += '    TARGET_INCLUDE_GOOGLE_TELECOMM ?= true\n'
+    out += '    TARGET_INCLUDE_PARTNER_SETUP ?= false\n'
     out += 'else\n'
-    out += '    PRODUCT_PACKAGES += GmsCoreFull\n'
+    out += '    PRODUCT_PACKAGES += FullPkgs\n'
+    out += '    TARGET_INCLUDE_GOOGLE_TELECOMM ?= true\n'
+    out += '    TARGET_INCLUDE_PARTNER_SETUP ?= true\n'
+    out += 'endif\n\n'
+    out += 'ifeq ($(strip $(TARGET_INCLUDE_GOOGLE_TELECOMM)),true)\n'
+    out += '    PRODUCT_PACKAGES += TelecommPkgs\n'
+    out += 'endif\n\n'
+    out += 'ifeq ($(strip $(TARGET_INCLUDE_PARTNER_SETUP)),true)\n'
+    out += '    PRODUCT_PACKAGES += PartnerPkgs\n'
     out += 'endif\n'
 
     COMMON_VENDOR_MK.write_text(out)

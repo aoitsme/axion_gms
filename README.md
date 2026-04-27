@@ -23,11 +23,14 @@ $(call inherit-product-if-exists, vendor/gms/products/gms.mk)
 
 | Variant | Module |
 | --- | --- |
-| `gms` / unset | `GmsCoreFull` |
-| `core` | `GmsCoreAndroid` |
-| `pico` | `GmsCoreMain` |
+| `gms` / unset | `FullPkgs` |
+| `core` | `CorePkgs` |
+| `pico` | `PicoPkgs` |
 
 Build output/version flavor names are `GMS`, `PICO`, `CORE`, or `VANILLA`.
+
+`TARGET_INCLUDE_GOOGLE_TELECOMM` controls the optional `GoogleTelecomm` module. It defaults to `false` for `pico` and `true` for `core`/`gms`.
+`TARGET_INCLUDE_PARTNER_SETUP` controls the optional `PartnerPkgs` setup stack. It defaults to `false` for `pico` and `true` for `core`/`gms`.
 
 ## Extracting / updating
 
@@ -64,6 +67,7 @@ Or fetch a Pixel factory image by release prefix:
 1. `./extract-files.py ...`
    - extracts files listed in `proprietary-files.txt`
    - regenerates `common/Android.bp` and `common/common-vendor.mk`
+   - syncs GMS phony module bundles from `propietary-pkgs-bundle.txt`
    - updates `proprietary-pkg-map.txt` from extracted APK package names
    - injects explicit dependencies from `proprietary-required-map.txt`
    - grabs SetupWizard/GMS-related product properties into `products/gms-props.mk`
@@ -140,6 +144,7 @@ string:config_defaultAssistantAccessComponent
 
 | File | Purpose |
 | --- | --- |
+| `propietary-pkgs-bundle.txt` | Defines the Soong phony module bundles used by `TARGET_GAPPS_VARIANT`. Edit this to change what `PicoPkgs`, `CorePkgs`, and `FullPkgs` pull in. |
 | `proprietary-pkg-map.txt` | Maps Soong module name to Android package name. Used for overlay target matching and regenerated from APKs. |
 | `proprietary-required-map.txt` | Explicit module dependencies that must be added to app imports. |
 | `proprietary-target-map.txt` | Redirects OEM overlay target packages to AOSP target packages. |
@@ -149,4 +154,4 @@ string:config_defaultAssistantAccessComponent
 
 - Overlay extraction uses parallel apktool jobs, so it can be heavy on weak hosts.
 - If apktool output looks wrong, remove the generated overlay directory and rerun `./regen`.
-- After changing `proprietary-required-map.txt`, rerun `./extract-files.py --regenerate_makefiles` or `./regen` so `common/Android.bp` is updated.
+- After changing `propietary-pkgs-bundle.txt` or `proprietary-required-map.txt`, rerun `./extract-files.py --regenerate_makefiles` or `./regen` so `common/Android.bp` is updated.

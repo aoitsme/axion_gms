@@ -115,6 +115,7 @@ android_app_import {
     presigned: true,
     required: [
         "AndroidAutoStubPrebuiltOverlay",
+        "CccDkTimeSyncService",
     ],
     dex_preopt: {
         enabled: false,
@@ -419,27 +420,15 @@ android_app_import {
     preprocessed: true,
     presigned: true,
     required: [
-        "AndroidPlatformServices",
         "GmsAndroidOverlay",
         "GmsAndroidOverlayDevicelockcontroller",
         "GmsAndroidOverlaySettings",
         "GmsAndroidOverlaySystemui",
-        "MlkitBarcodeUIPrebuilt",
         "PrebuiltGmsCoreVicOverlay",
         "PrebuiltGmsCoreVicOverlayContacts",
         "PrebuiltGmsCoreVicOverlayPhone",
         "PrebuiltGmsCoreVicOverlaySettings",
         "PrebuiltGmsCoreVicOverlaySystemui",
-        "PrebuiltGmsCoreVic_AdsDynamite",
-        "PrebuiltGmsCoreVic_CronetDynamite",
-        "PrebuiltGmsCoreVic_DynamiteLoader",
-        "PrebuiltGmsCoreVic_DynamiteModulesA",
-        "PrebuiltGmsCoreVic_DynamiteModulesC",
-        "PrebuiltGmsCoreVic_GoogleCertificates",
-        "PrebuiltGmsCoreVic_MapsDynamite",
-        "PrebuiltGmsCoreVic_MeasurementDynamite",
-        "TfliteDynamitePrebuilt",
-        "VisionBarcodePrebuilt",
     ],
     dex_preopt: {
         enabled: false,
@@ -567,8 +556,11 @@ dex_import {
 }
 
 phony {
-    name: "GmsCore",
+    name: "CommonPkgs",
     required: [
+        "GoogleServicesFramework",
+        "MarkupGoogle_v2",
+        "Phonesky",
         "PrebuiltGmsCoreVic",
         "PrebuiltGmsCoreVic_AdsDynamite",
         "PrebuiltGmsCoreVic_CronetDynamite",
@@ -578,50 +570,58 @@ phony {
         "PrebuiltGmsCoreVic_GoogleCertificates",
         "PrebuiltGmsCoreVic_MapsDynamite",
         "PrebuiltGmsCoreVic_MeasurementDynamite",
-        "TfliteDynamitePrebuilt",
-        "VisionBarcodePrebuilt",
     ],
 }
 
 phony {
-    name: "GmsCoreMain",
+    name: "PicoPkgs",
     required: [
-        "AndroidPlatformServices",
-        "GmsCore",
-        "GoogleServicesFramework",
-        "MlkitBarcodeUIPrebuilt",
-        "Phonesky",
+        "CommonPkgs",
     ],
 }
 
 phony {
-    name: "GmsCoreAndroid",
+    name: "CorePkgs",
     required: [
         "AndroidAutoStubPrebuilt",
-        "CccDkTimeSyncService",
-        "GmsCoreMain",
+        "CommonPkgs",
+        "LatinIMEGooglePrebuilt",
+    ],
+}
+
+phony {
+    name: "TelecommPkgs",
+    required: [
+        "GoogleContacts",
+        "GoogleDialer",
+        "PrebuiltBugle",
+    ],
+}
+
+phony {
+    name: "PartnerPkgs",
+    required: [
         "GoogleOneTimeInitializer",
         "GoogleRestorePrebuilt",
-        "LatinIMEGooglePrebuilt",
         "PartnerSetupPrebuilt",
         "SetupWizardPixelPrebuilt_v802960446",
         "SetupWizardPrebuilt_v811313066",
-        "WellbeingPrebuilt",
     ],
 }
 
 phony {
-    name: "GmsCoreFull",
+    name: "FullPkgs",
     required: [
+        "AndroidPlatformServices",
         "CalculatorGooglePrebuilt_85006267",
         "CalendarGooglePrebuilt",
-        "GmsCoreAndroid",
-        "GoogleContacts",
-        "GoogleDialer",
-        "MarkupGoogle_v2",
-        "PrebuiltBugle",
+        "CorePkgs",
+        "MlkitBarcodeUIPrebuilt",
         "PrebuiltDeskClockGoogle_76007351",
+        "TfliteDynamitePrebuilt",
         "Velvet",
+        "VisionBarcodePrebuilt",
+        "WellbeingPrebuilt",
         "talkback",
     ],
 }

@@ -7,6 +7,7 @@ PRODUCT_SOONG_NAMESPACES += \
 
 PRODUCT_COPY_FILES += \
     vendor/gms/common/proprietary/product/etc/default-permissions/default-permissions.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions.xml \
+    vendor/gms/common/proprietary/product/etc/permissions/com.google.android.apps.setupwizard.searchselector.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/com.google.android.apps.setupwizard.searchselector.xml \
     vendor/gms/common/proprietary/product/etc/permissions/com.google.android.dialer.support.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/com.google.android.dialer.support.xml \
     vendor/gms/common/proprietary/product/etc/permissions/privapp-permissions-google-p.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-google-p.xml \
     vendor/gms/common/proprietary/product/etc/permissions/split-permissions-google.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/split-permissions-google.xml \
@@ -36,11 +37,6 @@ PRODUCT_COPY_FILES += \
     vendor/gms/common/proprietary/product/etc/sysconfig/preinstalled_packages_pixel_experience_2017_and_newer.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/preinstalled_packages_pixel_experience_2017_and_newer.xml \
     vendor/gms/common/proprietary/product/etc/sysconfig/preinstalled_packages_pixel_experience_2021_and_newer.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/preinstalled_packages_pixel_experience_2021_and_newer.xml \
     vendor/gms/common/proprietary/product/etc/sysconfig/preinstalled_packages_repair_mode.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/preinstalled_packages_repair_mode.xml \
-    vendor/gms/common/proprietary/product/tts/google/de-de/de-de-x-multi-r60.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/de-de/de-de-x-multi-r60.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/es-es/es-es-x-multi-r59.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/es-es/es-es-x-multi-r59.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/it-it/it-it-x-multi-r57.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/it-it/it-it-x-multi-r57.zvoice \
-    vendor/gms/common/proprietary/product/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice:$(TARGET_COPY_OUT_PRODUCT)/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice \
     vendor/gms/common/proprietary/system/etc/permissions/privapp-permissions-google.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-google.xml \
     vendor/gms/common/proprietary/system_ext/etc/permissions/CccDkTimeSyncService.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/CccDkTimeSyncService.xml \
     vendor/gms/common/proprietary/system_ext/etc/permissions/org.carconnectivity.android.digitalkey.timesync.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/org.carconnectivity.android.digitalkey.timesync.xml \
@@ -50,9 +46,23 @@ TARGET_GAPPS_VARIANT ?= gms
 
 # Map GMS variant to Soong phony modules
 ifeq ($(strip $(TARGET_GAPPS_VARIANT)),pico)
-    PRODUCT_PACKAGES += GmsCoreMain
+    PRODUCT_PACKAGES += PicoPkgs
+    TARGET_INCLUDE_GOOGLE_TELECOMM ?= false
+    TARGET_INCLUDE_PARTNER_SETUP ?= false
 else ifeq ($(strip $(TARGET_GAPPS_VARIANT)),core)
-    PRODUCT_PACKAGES += GmsCoreAndroid
+    PRODUCT_PACKAGES += CorePkgs
+    TARGET_INCLUDE_GOOGLE_TELECOMM ?= true
+    TARGET_INCLUDE_PARTNER_SETUP ?= false
 else
-    PRODUCT_PACKAGES += GmsCoreFull
+    PRODUCT_PACKAGES += FullPkgs
+    TARGET_INCLUDE_GOOGLE_TELECOMM ?= true
+    TARGET_INCLUDE_PARTNER_SETUP ?= true
+endif
+
+ifeq ($(strip $(TARGET_INCLUDE_GOOGLE_TELECOMM)),true)
+    PRODUCT_PACKAGES += TelecommPkgs
+endif
+
+ifeq ($(strip $(TARGET_INCLUDE_PARTNER_SETUP)),true)
+    PRODUCT_PACKAGES += PartnerPkgs
 endif

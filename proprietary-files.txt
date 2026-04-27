@@ -95,12 +95,5 @@ product/etc/sysconfig/google.xml
 product/etc/sysconfig/google_build.xml
 product/etc/sysconfig/contextual_search.xml
 
-# TTS
-product/tts/google/de-de/de-de-x-multi-r60.zvoice
-product/tts/google/es-es/es-es-x-multi-r59.zvoice
-product/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice
-product/tts/google/it-it/it-it-x-multi-r57.zvoice
-product/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice
-
 # TalkBack (gms)
 product/app/talkback/talkback.apk;PRESIGNED

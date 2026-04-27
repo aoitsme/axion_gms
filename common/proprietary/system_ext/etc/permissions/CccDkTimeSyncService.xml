@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.google.pixel.digitalkey.timesync">
+        <permission name="android.permission.UWB_PRIVILEGED"/>
+    </privapp-permissions>
+</permissions>

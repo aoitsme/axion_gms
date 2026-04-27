@@ -5,6 +5,6 @@
     <integer name="config_externalDisplayPeakRefreshRate">61</integer>
     <integer name="config_externalDisplayPeakWidth">1920</integer>
     <integer name="config_fingerprintMaxTemplatesPerUser">4</integer>
-    <integer name="config_maxDesktopWindowingActiveTasks">8</integer>
+    <integer name="config_maxDesktopWindowingActiveTasks">5</integer>
     <integer name="config_screenTimeoutOverride">10000</integer>
 </resources>

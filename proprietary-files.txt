@@ -1,145 +1,28 @@
-# All blobs below are extracted from caiman BP3A.251105.015
+# All blobs below are extracted from caiman BP4A.260205.002
 
-# Accessibility Menu
-system_ext/app/AccessibilityMenu/AccessibilityMenu.apk;PRESIGNED
-
-# Adaptive VPN
-product/priv-app/AdaptiveVPNPrebuilt-10435/AdaptiveVPNPrebuilt-10435.apk;PRESIGNED
-
-# AI Core
-product/priv-app/AICorePrebuilt-aicore_20250130.00_RC01/AICorePrebuilt-aicore_20250130.00_RC01.apk:product/priv-app/AICorePrebuilt/AICorePrebuilt.apk;OVERRIDES=AICorePrebuilt-aicore_20250130.00_RC01;PRESIGNED
-
-# Ai Wallpapers
-product/app/WallpaperAIPrebuilt_10000372/WallpaperAIPrebuilt_10000372.apk;PRESIGNED
-
-# AmbientStreaming
-product/priv-app/AmbientStreaming/AmbientStreaming.apk;PRESIGNED
-product/etc/ambient/matcher_tah.leveldb
-
-# AndroidAuto
+# Android Auto (core+gms)
 product/priv-app/AndroidAutoStubPrebuilt/AndroidAutoStubPrebuilt.apk;PRESIGNED
+system_ext/priv-app/CccDkTimeSyncService/CccDkTimeSyncService.apk;PRESIGNED
+system_ext/framework/org.carconnectivity.android.digitalkey.timesync.jar
+system_ext/etc/permissions/CccDkTimeSyncService.xml
+system_ext/etc/permissions/org.carconnectivity.android.digitalkey.timesync.xml
 
-# Arcore
-product/app/arcore-1.48/arcore-1.48.apk;PRESIGNED
-
-# Audio
-product/media/audio/alarms/A_real_hoot.ogg
-product/media/audio/alarms/Bright_morning.ogg
-product/media/audio/alarms/Cuckoo_clock.ogg
-product/media/audio/alarms/Early_twilight.ogg
-product/media/audio/alarms/Fresh_start.ogg
-product/media/audio/alarms/Full_of_wonder.ogg
-product/media/audio/alarms/Gentle_breeze.ogg
-product/media/audio/alarms/Icicles.ogg
-product/media/audio/alarms/Jump_start.ogg
-product/media/audio/alarms/Loose_change.ogg
-product/media/audio/alarms/Rolling_fog.ogg
-product/media/audio/alarms/Spokes.ogg
-product/media/audio/alarms/Sunshower.ogg
-product/media/audio/notifications/Beginning.ogg
-product/media/audio/notifications/Coconuts.ogg
-product/media/audio/notifications/Duet.ogg
-product/media/audio/notifications/End_note.ogg
-product/media/audio/notifications/Eureka.ogg
-product/media/audio/notifications/Gentle_gong.ogg
-product/media/audio/notifications/Mallet.ogg
-product/media/audio/notifications/Orders_up.ogg
-product/media/audio/notifications/Ping.ogg
-product/media/audio/notifications/Pipes.ogg
-product/media/audio/notifications/Popcorn.ogg
-product/media/audio/notifications/Shopkeeper.ogg
-product/media/audio/notifications/Sticks_and_stones.ogg
-product/media/audio/notifications/Tuneup.ogg
-product/media/audio/notifications/Tweeter.ogg
-product/media/audio/notifications/Twinkle.ogg
-product/media/audio/ringtones/Copycat.ogg
-product/media/audio/ringtones/Crackle.ogg
-product/media/audio/ringtones/Flutterby.ogg
-product/media/audio/ringtones/Hotline.ogg
-product/media/audio/ringtones/Leaps_and_bounds.ogg
-product/media/audio/ringtones/Lollipop.ogg
-product/media/audio/ringtones/Lost_and_found.ogg
-product/media/audio/ringtones/Mash_up.ogg
-product/media/audio/ringtones/Monkey_around.ogg
-product/media/audio/ringtones/Schools_out.ogg
-product/media/audio/ringtones/The_big_adventure.ogg
-product/media/audio/ringtones/Your_new_adventure.ogg
-product/media/audio/ringtones/Zen_too.ogg
-product/media/audio/ui/AttentionalHaptics.ogg
-product/media/audio/ui/ChargingStarted.ogg
-product/media/audio/ui/Dock.ogg
-product/media/audio/ui/Effect_Tick.ogg
-product/media/audio/ui/InCallNotification.ogg
-product/media/audio/ui/KeypressDelete.ogg
-product/media/audio/ui/KeypressReturn.ogg
-product/media/audio/ui/KeypressSpacebar.ogg
-product/media/audio/ui/KeypressStandard.ogg
-product/media/audio/ui/Lock.ogg
-product/media/audio/ui/LowBattery.ogg
-product/media/audio/ui/NFCFailure.ogg
-product/media/audio/ui/NFCInitiated.ogg
-product/media/audio/ui/NFCSuccess.ogg
-product/media/audio/ui/NFCTransferComplete.ogg
-product/media/audio/ui/NFCTransferInitiated.ogg
-product/media/audio/ui/Undock.ogg
-product/media/audio/ui/Unlock.ogg
-product/media/audio/ui/VideoRecord.ogg
-product/media/audio/ui/VideoStop.ogg
-product/media/audio/ui/WirelessChargingStarted.ogg
-product/media/audio/ui/audio_end.ogg
-product/media/audio/ui/audio_initiate.ogg
-product/media/audio/ui/camera_click.ogg
-product/media/audio/ui/camera_focus.ogg
-product/media/audio/ui/reverse_charging_end.ogg
-product/media/audio/ui/reverse_charging_start.ogg
-
-# AvatarPicker
-system_ext/priv-app/AvatarPickerGoogle/AvatarPickerGoogle.apk;PRESIGNED
-
-# Browser
-product/app/Chrome-Stub/Chrome-Stub.apk;OVERRIDES=webview,Browser2,Jelly;PRESIGNED
-product/app/Chrome/Chrome.apk.gz;PRESIGNED
-product/app/TrichromeLibrary-Stub/TrichromeLibrary-Stub.apk;PRESIGNED
-product/app/TrichromeLibrary/TrichromeLibrary.apk.gz;PRESIGNED
-product/app/WebViewGoogle-Stub/WebViewGoogle-Stub.apk;OVERRIDES=webview;PRESIGNED
-product/app/WebViewGoogle/WebViewGoogle.apk.gz;PRESIGNED
-
-# Calculator
+# Calculator (gms)
 product/app/CalculatorGooglePrebuilt_85006267/CalculatorGooglePrebuilt_85006267.apk;OVERRIDES=ExactCalculator;PRESIGNED
 
-# Calendar
+# Calendar (gms)
 product/app/CalendarGooglePrebuilt/CalendarGooglePrebuilt.apk;OVERRIDES=Calendar2,Calendar,Etar;PRESIGNED
 
-# Clock
+# Clock (gms)
 product/priv-app/PrebuiltDeskClockGoogle_76007351/PrebuiltDeskClockGoogle_76007351.apk;OVERRIDES=DeskClock;PRESIGNED
 
-# Creative Assistant
-product/priv-app/CreativeAssistant/CreativeAssistant.apk;PRESIGNED
-
-# Customization bundle
-product/priv-app/CustomizationBundlePrebuilt/CustomizationBundlePrebuilt.apk;PRESIGNED
-
-# Device Connectivity Service
-system_ext/priv-app/DeviceConnectivityServicePrebuilt_25.04.00/DeviceConnectivityServicePrebuilt_25.04.00.apk;PRESIGNED
-
-# Diagnostics/Telemetry
-product/etc/default-permissions/default-permissions_diagnostictool.xml
-product/etc/permissions/com.google.android.apps.diagnosticstool.xml
-product/app/PrebuiltGoogleTelemetryTvp/PrebuiltGoogleTelemetryTvp.apk;PRESIGNED
-#product/priv-app/DiagnosticsToolPrebuilt/DiagnosticsToolPrebuilt.apk;PRESIGNED
-
-# Emoji Wallpaper
-product/app/WallpaperEmojiPrebuilt-foldable-wallpaper/WallpaperEmojiPrebuilt-foldable-wallpaper.apk;PRESIGNED
-
-# Files
-product/priv-app/FilesPrebuilt/FilesPrebuilt.apk;PRESIGNED
+# Files (core+gms)
 system/priv-app/DocumentsUIGoogle/DocumentsUIGoogle.apk;OVERRIDES=DocumentsUI;PRESIGNED
-system_ext/priv-app/StorageManagerGoogle/StorageManagerGoogle.apk;OVERRIDES=StorageManager;PRESIGNED
 
-# Google search
+# Google Search (gms)
 product/priv-app/Velvet/Velvet.apk;OVERRIDES=QuickSearchBox;PRESIGNED
 
-# Google Play
+# Google Play (pico+core+gms — all variants need GMS Core + Phonesky + GSF)
 product/priv-app/Phonesky/Phonesky.apk;OVERRIDES=messaging;PRESIGNED
 product/priv-app/PrebuiltGmsCoreVic/PrebuiltGmsCoreVic.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/app_chimera/m/PrebuiltGmsCoreVic_AdsDynamite/PrebuiltGmsCoreVic_AdsDynamite.apk;PRESIGNED
@@ -158,208 +41,44 @@ system/app/GoogleExtShared/GoogleExtShared.apk;OVERRIDES=ExtShared;PRESIGNED
 system_ext/priv-app/GoogleFeedback/GoogleFeedback.apk;PRESIGNED
 system_ext/priv-app/GoogleServicesFramework/GoogleServicesFramework.apk;PRESIGNED
 
-# Health Connect
-product/priv-app/HealthIntelligencePrebuilt-1762/HealthIntelligencePrebuilt-1762.apk:product/priv-app/HealthIntelligencePrebuilt/HealthIntelligencePrebuilt.apk;OVERRIDES=HealthIntelligencePrebuilt-1762;PRESIGNED
-product/etc/sysconfig/firproximity.xml
-
-# Keyboard
+# Keyboard (core+gms)
 product/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk;OVERRIDES=LatinIME;PRESIGNED
-product/usr/share/ime/google/d3_lms/ko_2018030706.zip
-product/usr/share/ime/google/d3_lms/mozc.data
-product/usr/share/ime/google/d3_lms/zh_CN_2018030706.zip
 
-# Location
-product/app/LocationHistoryPrebuilt/LocationHistoryPrebuilt.apk;PRESIGNED
-
-# Music detector
-product/etc/firmware/music_detector.descriptor
-product/etc/firmware/music_detector.sound_model
-product/etc/firmware/music_detector.sound_model_2
-product/etc/firmware/music_detector.sound_model_tflite
-
-# Offline VoiceRecognition Models
-product/usr/srec/en-US/acousticmodel/LARGE_RNNT_VOICE_ACTIONS_EP_UNIFIED_FRONTEND.endpointer_portable_lstm_mean_stddev
-product/usr/srec/en-US/acousticmodel/LARGE_RNNT_VOICE_ACTIONS_EP_UNIFIED_FRONTEND.endpointer_portable_lstm_model
-product/usr/srec/en-US/acousticmodel/MARBLE_VOICE_ACTIONS_EP_UNIFIED_FRONTEND.endpointer_portable_lstm_mean_stddev
-product/usr/srec/en-US/acousticmodel/MARBLE_VOICE_ACTIONS_EP_UNIFIED_FRONTEND.endpointer_portable_lstm_model
-product/usr/srec/en-US/acousticmodel/SODA_DICTATION_EP_UNIFIED_FRONTEND.endpointer_portable_lstm_mean_stddev
-product/usr/srec/en-US/acousticmodel/SODA_DICTATION_EP_UNIFIED_FRONTEND.endpointer_portable_lstm_model
-product/usr/srec/en-US/acousticmodel/SODA_DICTATION_EP_UNIFIED_FRONTEND_LANGID.endpointer_portable_lstm_mean_stddev
-product/usr/srec/en-US/acousticmodel/SODA_DICTATION_EP_UNIFIED_FRONTEND_LANGID.endpointer_portable_lstm_model
-product/usr/srec/en-US/config.pumpkin
-product/usr/srec/en-US/configs/LANGUAGE_IDENTIFICATION.config
-product/usr/srec/en-US/configs/ONDEVICE_MEDIUM_CONTINUOUS.config
-product/usr/srec/en-US/configs/ONDEVICE_MEDIUM_SHORT_compiler.config
-product/usr/srec/en-US/configs/ONDEVICE_MEDIUM_SHORT.config
-product/usr/srec/en-US/configs/ONDEVICE_MEDIUM_VOICE_MATCH.config
-product/usr/srec/en-US/configs/ONDEVICE_SPEAKER_TURN_DETECTION.config
-product/usr/srec/en-US/context_prebuilt/apps.txt
-product/usr/srec/en-US/context_prebuilt/contacts.txt
-product/usr/srec/en-US/context_prebuilt/en-US_android-auto_car_automation.action.union_STD_FST.fst
-product/usr/srec/en-US/context_prebuilt/en-US_android-auto_manual_fixes_STD_FST.fst
-product/usr/srec/en-US/context_prebuilt/en-US_android-auto_top_radio_station_frequencies_STD_FST.fst
-product/usr/srec/en-US/context_prebuilt/SODA.prebuilt_class_archive.mfar
-product/usr/srec/en-US/context_prebuilt/SODA.prebuilt_class_archive.syms
-product/usr/srec/en-US/context_prebuilt/songs.txt
-product/usr/srec/en-US/denorm/embedded_class_denorm.mfar
-product/usr/srec/en-US/denorm/embedded_covid_19.mfar
-product/usr/srec/en-US/denorm/embedded_fix_ampm.mfar
-product/usr/srec/en-US/denorm/embedded_normalizer_no_emoticons_no_spoken_punc.mfar
-product/usr/srec/en-US/denorm/embedded_normalizer_only_emojis.mfar
-product/usr/srec/en-US/denorm/embedded_normalizer_only_spoken_punctuation.mfar
-product/usr/srec/en-US/denorm/embedded_replace_annotated_emoticon_words_dash.mfar
-product/usr/srec/en-US/denorm/embedded_replace_annotated_punct_words_dash_no_emoticons.mfar
-product/usr/srec/en-US/denorm/porn_normalizer_on_device.mfar
-product/usr/srec/en-US/denorm/remove_spoken_punc_formatting.mfar
-product/usr/srec/en-US/diarization/SODA_SPEAKER_TURN.scd.decoder
-product/usr/srec/en-US/diarization/SODA_SPEAKER_TURN.scd.encoder
-product/usr/srec/en-US/diarization/SODA_SPEAKER_TURN.scd.joint_model
-product/usr/srec/en-US/diarization/SODA_SPEAKER_TURN.scd.mean_stddev
-product/usr/srec/en-US/diarization/SODA_SPEAKER_TURN.scd.syms
-product/usr/srec/en-US/endtoendmodel/large_continuous_frontend_params.mean_stddev
-product/usr/srec/en-US/endtoendmodel/large_short_frontend_params.mean_stddev
-product/usr/srec/en-US/endtoendmodel/medium-decoder.tflite
-product/usr/srec/en-US/endtoendmodel/medium-encoder.tflite
-product/usr/srec/en-US/endtoendmodel/medium-joint_posterior.tflite
-product/usr/srec/en-US/endtoendmodel/medium-joint_prior.tflite
-product/usr/srec/en-US/endtoendmodel/medium-rank_candidates_acoustic.tflite
-product/usr/srec/en-US/endtoendmodel/medium.syms.compact
-product/usr/srec/en-US/endtoendmodel/medium.wpm.portable
-product/usr/srec/en-US/g2p
-product/usr/srec/en-US/g2p_phonemes.syms
-product/usr/srec/en-US/g2p.syms
-product/usr/srec/en-US/langid/application_params_langid_stream_multiclass_ONDEVICE
-product/usr/srec/en-US/langid/ONDEVICE_langid.tflite
-product/usr/srec/en-US/magic_mic/MARBLE_V2_acoustic_meanstddev_vector
-product/usr/srec/en-US/magic_mic/MARBLE_V2_acoustic_model.int8.tflite
-product/usr/srec/en-US/magic_mic/MARBLE_V2_model.int8.tflite
-product/usr/srec/en-US/magic_mic/MARBLE_V2_vocabulary.syms
-product/usr/srec/en-US/metadata
-product/usr/srec/en-US/monastery_config.pumpkin
-product/usr/srec/en-US/offline_action_data.pb
-product/usr/srec/en-US/pumpkin.mmap
-product/usr/srec/en-US/semantics.pumpkin
-product/usr/srec/en-US/SODA_punctuation_config.pb
-product/usr/srec/en-US/SODA_punctuation_model.tflite
-product/usr/srec/en-US/voice_match/MARBLE_speakerid.tflite
-product/usr/srec/en-US/voice_match/MARBLE_voice_filter.tflite
-
-# NgaResources
-product/app/NgaResources/NgaResources.apk;PRESIGNED
-product/etc/sysconfig/nga.xml
-
-# Permissions
-product/etc/default-permissions/betterbug-default-permissions.xml
+# Permissions (all variants)
 product/etc/default-permissions/default-permissions.xml
-product/etc/default-permissions/default-permissions-com.google.android.apps.pixel.agent.xml
-product/etc/default-permissions/default-permissions_customizationbundle.xml
-product/etc/default-permissions/default-permissions_maestro.xml
-product/etc/default-permissions/default-permissions_pixelsupport.xml
-product/etc/default-permissions/default-permissions_pixelweather.xml
-product/etc/default-permissions/default-permissions-safetyhub.xml
-product/etc/default-permissions/default-permissions-stargate.xml
-product/etc/default-permissions/default-permissions_talkback.xml
-product/etc/default-permissions/default-permissions_wallpapereffect.xml
-product/etc/permissions/com.android.omadm.service.xml
-product/etc/permissions/com.google.android.apps.dreamliner.xml
-product/etc/permissions/com.google.android.apps.setupwizard.searchselector.xml
-product/etc/permissions/com.google.android.apps.stargate.support.xml
-product/etc/permissions/com.google.android.apps.stargate.xml
 product/etc/permissions/com.google.android.dialer.support.xml
-product/etc/permissions/com.google.android.odad.xml
-product/etc/permissions/com.google.omadm.trigger.xml
 product/etc/permissions/privapp-permissions-google-p.xml
-product/etc/permissions/privapp-permissions-google-pearl.xml
 product/etc/permissions/split-permissions-google.xml
 system/etc/permissions/privapp-permissions-google.xml
-system_ext/etc/permissions/com.google.android.apps.pixel.dcservice.xml
 system_ext/etc/permissions/privapp-permissions-google-se.xml
 
-# PersistentBackgroundServices
-system_ext/app/PersistentBackgroundServices/PersistentBackgroundServices.apk
-
-# Phone
+# Phone (gms)
 product/app/GoogleContacts/GoogleContacts.apk;OVERRIDES=Contacts,Contacts2;PRESIGNED
 product/framework/com.google.android.dialer.support.jar
 product/priv-app/GoogleDialer/GoogleDialer.apk;OVERRIDES=Dialer;PRESIGNED
 product/priv-app/PrebuiltBugle/PrebuiltBugle.apk;OVERRIDES=messaging;PRESIGNED
 
-# Photo
+# Photo (gms)
 product/app/MarkupGoogle_v2/MarkupGoogle_v2.apk;PRESIGNED
 
-# Pixel
-product/app/VoiceAccessPrebuilt/VoiceAccessPrebuilt.apk;PRESIGNED
-product/priv-app/DreamlinerDreamsPrebuilt_100894/DreamlinerDreamsPrebuilt_100894.apk;PRESIGNED
-product/priv-app/DreamlinerPrebuilt_22000020/DreamlinerPrebuilt_22000020.apk;PRESIGNED
-product/priv-app/DreamlinerUpdater/DreamlinerUpdater.apk;PRESIGNED
-product/priv-app/GoogleCamera/GoogleCamera.apk;OVERRIDES=Aperture,Camera,Camera2;PRESIGNED
-product/priv-app/WallpaperEffect/WallpaperEffect.apk;PRESIGNED
-
-# Pixel AI
-product/priv-app/PixelAIPrebuilt/PixelAIPrebuilt.apk;PRESIGNED
-
-# PrebuiltPixelCoreServices
-product/priv-app/PrebuiltPixelCoreServices/PrebuiltPixelCoreServices.apk;PRESIGNED
-
-# Print
-system/app/GooglePrintRecommendationService/GooglePrintRecommendationService.apk;OVERRIDES=PrintRecommendationService;PRESIGNED
-
-# Pixel Besties
-product/priv-app/RelationshipsPrebuilt-301/RelationshipsPrebuilt-301.apk;PRESIGNED
-
-# RepairMode
-#system_ext/app/RepairMode/RepairMode.apk
-#system_ext/etc/init/init.repair_mode.rc
-
-# SafetyHub
-product/priv-app/SafetyHubPrebuilt/SafetyHubPrebuilt.apk;OVERRIDES=EmergencyInfo;PRESIGNED
-system_ext/app/EmergencyInfoGoogleNoUi/EmergencyInfoGoogleNoUi.apk
-
-# Scribe
-product/priv-app/ScribePrebuilt_v8.4.773573318/ScribePrebuilt_v8.4.773573318.apk;PRESIGNED
-
-# Search Selector
-product/priv-app/SearchSelectorPrebuilt/SearchSelectorPrebuilt.apk;PRESIGNED
-
-# Security
-product/app/DevicePolicyPrebuilt-v10334460/DevicePolicyPrebuilt-v10334460.apk;PRESIGNED
+# Security (all variants)
 product/etc/security/fsverity/gms_fsverity_cert.der
 product/etc/security/fsverity/play_store_fsi_cert.der
 
-# Setup
+# Setup (core+gms)
 product/priv-app/GoogleOneTimeInitializer/GoogleOneTimeInitializer.apk;OVERRIDES=OneTimeInitializer;PRESIGNED
-product/priv-app/GoogleRestorePrebuilt-v842048/GoogleRestorePrebuilt-v842048.apk;PRESIGNED
+product/priv-app/GoogleRestorePrebuilt-v842048/GoogleRestorePrebuilt-v842048.apk:product/priv-app/GoogleRestorePrebuilt/GoogleRestorePrebuilt.apk;OVERRIDES=GoogleRestorePrebuilt-v842048;PRESIGNED
 product/priv-app/PartnerSetupPrebuilt/PartnerSetupPrebuilt.apk;PRESIGNED
 product/priv-app/SetupWizardPrebuilt_v811313066/SetupWizardPrebuilt_v811313066.apk;OVERRIDES=Provision;PRESIGNED
+product/priv-app/WellbeingPrebuilt/WellbeingPrebuilt.apk;PRESIGNED
 system_ext/priv-app/SetupWizardPixelPrebuilt_v802960446/SetupWizardPixelPrebuilt_v802960446.apk;OVERRIDES=LineageSetupWizard;PRESIGNED
 
-# Sound
-product/app/SoundAmplifierPrebuilt_v4.8.758106410/SoundAmplifierPrebuilt_v4.8.758106410.apk;PRESIGNED
-product/app/SoundPickerPrebuilt_33000242/SoundPickerPrebuilt_33000242.apk;PRESIGNED
-
-# Switch Access
-product/app/SwitchAccessPrebuilt_1.16.0.726766860/SwitchAccessPrebuilt_1.16.0.726766860.apk;PRESIGNED
-
-# Sysconfig
-product/etc/preferred-apps/google.xml
-product/etc/sysconfig/adaptivecharging.xml
-product/etc/sysconfig/allowlist_com.android.omadm.service.xml
-product/etc/sysconfig/allowlist_com.shannon.imsservice.xml
-product/etc/sysconfig/ambient_data.xml
-product/etc/sysconfig/contextual_search.xml
-product/etc/sysconfig/dreamliner.xml
-product/etc/sysconfig/game_service.xml
+# Sysconfig (all variants)
 product/etc/sysconfig/google-hiddenapi-package-whitelist.xml
 product/etc/sysconfig/google-initial-package-stopped-states.xml
 product/etc/sysconfig/google-install-constraints-package-allowlist.xml
 product/etc/sysconfig/google-staged-installer-whitelist.xml
 product/etc/sysconfig/google-system-apps-update-ownership.xml
-product/etc/sysconfig/google.xml
-product/etc/sysconfig/google_build.xml
-product/etc/sysconfig/google_fi.xml
-product/etc/sysconfig/GoogleCamera_6gb_or_more_ram.xml
-product/etc/sysconfig/nexus.xml
-product/etc/sysconfig/nga.xml
 product/etc/sysconfig/pixel_experience_2017.xml
 product/etc/sysconfig/pixel_experience_2018.xml
 product/etc/sysconfig/pixel_experience_2019.xml
@@ -376,34 +95,19 @@ product/etc/sysconfig/preinstalled-packages-product-pixel-2022-and-newer.xml
 product/etc/sysconfig/preinstalled-packages-product-pixel-2023-and-newer.xml
 product/etc/sysconfig/preinstalled-packages-product-pixel-2024-and-newer.xml
 product/etc/sysconfig/preinstalled_packages_repair_mode.xml
-product/etc/sysconfig/quick_tap.xml
-system_ext/etc/sysconfig/preinstalled-packages-com.android.google.avatarpicker.xml
+product/etc/sysconfig/google.xml
+product/etc/sysconfig/google_build.xml
+product/etc/sysconfig/contextual_search.xml
 
-# Satellite
-product/priv-app/SatelliteGatewayPrebuilt/SatelliteGatewayPrebuilt.apk:product/priv-app/PixelSatelliteGatewayPrebuilt/PixelSatelliteGatewayPrebuilt.apk;OVERRIDES=SatelliteGatewayPrebuilt;PRESIGNED
-system_ext/priv-app/VendorSatelliteService/VendorSatelliteService.apk:system_ext/priv-app/VendorSatelliteServicePrebuilt/VendorSatelliteServicePrebuilt.apk;OVERRIDES=VendorSatelliteService
-system_ext/priv-app/PixelSatelliteService/PixelSatelliteService.apk:system_ext/priv-app/PixelSatelliteServicePrebuilt/PixelSatelliteServicePrebuilt.apk;OVERRIDES=PixelSatelliteService
-product/etc/sysconfig/satellite_sos.xml
-system_ext/etc/permissions/privapp-permissions-satellite.xml
-system_ext/framework/SatelliteClient.jar
-
-# Tags
+# Tags (core+gms)
 system/priv-app/TagGoogle/TagGoogle.apk;OVERRIDES=Tag;PRESIGNED
 
-# Themes
-product/app/PixelThemesStub2022_and_newer/PixelThemesStub2022_and_newer.apk;PRESIGNED
-
 # TTS
-product/tts/google/de-de/de-de-x-multi-r60.zvoice
-product/tts/google/es-es/es-es-x-multi-r59.zvoice
-product/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice
-product/tts/google/it-it/it-it-x-multi-r57.zvoice
-product/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice
+-product/tts/google/de-de/de-de-x-multi-r60.zvoice
+-product/tts/google/es-es/es-es-x-multi-r59.zvoice
+-product/tts/google/fr-fr/fr-fr-x-multi-r60.zvoice
+-product/tts/google/it-it/it-it-x-multi-r57.zvoice
+-product/tts/google/ja-jp/ja-jp-x-multi-r58.zvoice
 
-# Voice
-product/app/GoogleTTS/GoogleTTS.apk;OVERRIDES=PicoTts;PRESIGNED
+# TalkBack (gms)
 product/app/talkback/talkback.apk;PRESIGNED
-product/priv-app/RecorderPrebuilt_725581069/RecorderPrebuilt_725581069.apk;OVERRIDES=Recorder;PRESIGNED
-
-# Wellbeing
-product/priv-app/WellbeingPrebuilt/WellbeingPrebuilt.apk;PRESIGNED

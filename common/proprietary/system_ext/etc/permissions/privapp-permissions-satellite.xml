@@ -1,5 +1,0 @@
-<permissions>
-    <privapp-permissions package="com.samsung.slsi.telephony.satelliteservice">
-        <permission name="android.permission.SATELLITE_COMMUNICATION" />
-    </privapp-permissions>
-</permissions>

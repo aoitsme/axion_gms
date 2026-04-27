@@ -38,6 +38,29 @@ module = ExtractUtilsModule(
 )
 
 GMS_PHONY_BUNDLE_FILE = "propietary-pkgs-bundle.txt"
+GMS_VARIANT_BUNDLES = (
+    ("pico", "PicoPkgs"),
+    ("core", "CorePkgs"),
+    (None, "FullPkgs"),
+)
+GMS_OPTIONAL_BUNDLES = {
+    "TelecommPkgs": {
+        "flag": "TARGET_INCLUDE_GOOGLE_TELECOMM",
+        "defaults": {
+            "pico": "false",
+            "core": "true",
+            "default": "true",
+        },
+    },
+    "PartnerPkgs": {
+        "flag": "TARGET_INCLUDE_PARTNER_SETUP",
+        "defaults": {
+            "pico": "false",
+            "core": "false",
+            "default": "true",
+        },
+    },
+}
 
 
 def load_phony_bundles(root_dir: Path) -> dict[str, list[str]]:
@@ -92,6 +115,47 @@ def sync_phony_modules(bp_path: Path, bundles: dict[str, list[str]]):
     content = content.rstrip() + "\n\n" + render_phony_modules(bundles)
     bp_path.write_text(content)
     print(f"[gms] synced phony modules from {GMS_PHONY_BUNDLE_FILE} into {bp_path}")
+
+
+def render_product_package_selection(bundles: dict[str, list[str]]) -> str:
+    out = ["TARGET_GAPPS_VARIANT ?= gms", "", "# Map GMS variant to Soong phony modules"]
+    optional_bundles = {
+        name: config for name, config in GMS_OPTIONAL_BUNDLES.items()
+        if name in bundles
+    }
+
+    emitted_variant = False
+    for variant, package in GMS_VARIANT_BUNDLES:
+        if package not in bundles:
+            continue
+
+        if variant is None:
+            out.append("else")
+            default_key = "default"
+        else:
+            prefix = "ifeq" if not emitted_variant else "else ifeq"
+            out.append(f"{prefix} ($(strip $(TARGET_GAPPS_VARIANT)),{variant})")
+            default_key = variant
+        emitted_variant = True
+
+        out.append(f"    PRODUCT_PACKAGES += {package}")
+        for config in optional_bundles.values():
+            default_value = config["defaults"].get(default_key)
+            if default_value is not None:
+                out.append(f"    {config['flag']} ?= {default_value}")
+
+    if emitted_variant:
+        out.append("endif")
+
+    for package, config in optional_bundles.items():
+        out.extend([
+            "",
+            f"ifeq ($(strip $({config['flag']})),true)",
+            f"    PRODUCT_PACKAGES += {package}",
+            "endif",
+        ])
+
+    return "\n".join(out) + "\n"
 
 
 def auto_update_package_mapping(root_dir: Path):
@@ -364,27 +428,7 @@ def post_regenerate_customizations(source_path: Path | None = None):
             out += f'    {f}{sep}\n'
         out += '\n'
 
-    out += 'TARGET_GAPPS_VARIANT ?= gms\n\n'
-    out += '# Map GMS variant to Soong phony modules\n'
-    out += 'ifeq ($(strip $(TARGET_GAPPS_VARIANT)),pico)\n'
-    out += '    PRODUCT_PACKAGES += PicoPkgs\n'
-    out += '    TARGET_INCLUDE_GOOGLE_TELECOMM ?= false\n'
-    out += '    TARGET_INCLUDE_PARTNER_SETUP ?= false\n'
-    out += 'else ifeq ($(strip $(TARGET_GAPPS_VARIANT)),core)\n'
-    out += '    PRODUCT_PACKAGES += CorePkgs\n'
-    out += '    TARGET_INCLUDE_GOOGLE_TELECOMM ?= true\n'
-    out += '    TARGET_INCLUDE_PARTNER_SETUP ?= false\n'
-    out += 'else\n'
-    out += '    PRODUCT_PACKAGES += FullPkgs\n'
-    out += '    TARGET_INCLUDE_GOOGLE_TELECOMM ?= true\n'
-    out += '    TARGET_INCLUDE_PARTNER_SETUP ?= true\n'
-    out += 'endif\n\n'
-    out += 'ifeq ($(strip $(TARGET_INCLUDE_GOOGLE_TELECOMM)),true)\n'
-    out += '    PRODUCT_PACKAGES += TelecommPkgs\n'
-    out += 'endif\n\n'
-    out += 'ifeq ($(strip $(TARGET_INCLUDE_PARTNER_SETUP)),true)\n'
-    out += '    PRODUCT_PACKAGES += PartnerPkgs\n'
-    out += 'endif\n'
+    out += render_product_package_selection(phony_bundles)
 
     COMMON_VENDOR_MK.write_text(out)
     print(f"[gms] updated {COMMON_VENDOR_MK} with clean variant selection logic")

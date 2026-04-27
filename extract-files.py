@@ -85,7 +85,6 @@ phony {
         "SetupWizardPrebuilt_v811313066",
         "TagGoogle",
         "WellbeingPrebuilt",
-        "org.carconnectivity.android.digitalkey.timesync",
     ],
 }
 
@@ -166,26 +165,62 @@ def inject_required_dependencies(bp_path: Path, required_map: dict[str, list[str
     content = bp_path.read_text()
     
     for mod_name, deps in required_map.items():
-        pattern = re.compile(rf'(android_app_import \{{.*?name: "{mod_name}",.*?)(\n\}})', re.DOTALL)
-        
-        def inject_block(match):
-            block_body = match.group(1)
-            footer = match.group(2)
-            
-            req_match = re.search(r'    required: \[(.*?)\],', block_body, re.DOTALL)
-            if req_match:
-                existing_deps = re.findall(r'"([^"]+)"', req_match.group(1))
-                new_deps = sorted(list(set(existing_deps + deps)))
-                new_req = "    required: [\n" + "".join(f'        "{d}",\n' for d in new_deps) + "    ],"
-                return re.sub(r'    required: \[.*?\],', new_req, block_body, flags=re.DOTALL) + footer
-            else:
-                new_req = "\n    required: [\n" + "".join(f'        "{d}",\n' for d in deps) + "    ],"
-                return block_body + new_req + footer
+        block_info = _find_android_app_import_block(content, mod_name)
+        if block_info is None:
+            continue
 
-        content = pattern.sub(inject_block, content)
+        block_start, block_end, block = block_info
+        required_match = re.search(r"(?ms)^    required:\s*\[\n(.*?)^    \],\n", block)
+        existing_deps = re.findall(r'"([^"]+)"', required_match.group(1)) if required_match else []
+        updated_block = _replace_or_add_list_property(
+            block,
+            "required",
+            sorted(set(existing_deps + deps)),
+        )
+        content = content[:block_start] + updated_block + content[block_end:]
     
     bp_path.write_text(content)
     print(f"[gms] injected dependencies from proprietary-required-map.txt into {bp_path}")
+
+
+def _replace_or_add_list_property(block: str, property_name: str, values: list[str]) -> str:
+    rendered = "".join(f'        "{value}",\n' for value in values)
+    prop = f"    {property_name}: [\n{rendered}    ],\n"
+    pattern = re.compile(rf"(?ms)^    {re.escape(property_name)}:\s*\[\n.*?^    \],\n")
+    if pattern.search(block):
+        return pattern.sub(prop, block, count=1)
+
+    lines = block.splitlines(keepends=True)
+    insert_at = len(lines) - 1
+    for i, line in enumerate(lines):
+        if line.startswith("    dex_preopt:"):
+            insert_at = i
+            break
+    lines.insert(insert_at, prop)
+    return "".join(lines)
+
+
+def _find_android_app_import_block(content: str, module_name: str) -> tuple[int, int, str] | None:
+    module_marker = f'    name: "{module_name}",\n'
+    cursor = 0
+    while True:
+        block_start = content.find("android_app_import {\n", cursor)
+        if block_start == -1:
+            return None
+        block_end = content.find("\n}\n", block_start)
+        while (
+            block_end != -1
+            and content.count("{", block_start, block_end + 2)
+            != content.count("}", block_start, block_end + 2)
+        ):
+            block_end = content.find("\n}\n", block_end + 1)
+        if block_end == -1:
+            return None
+        block_end += len("\n}\n")
+        block = content[block_start:block_end]
+        if module_marker in block:
+            return block_start, block_end, block
+        cursor = block_end
 
 
 def prune_required_dependencies(bp_path: Path):
@@ -339,11 +374,8 @@ def post_regenerate_customizations(source_path: Path | None = None):
             out += f'    {f}{sep}\n'
         out += '\n'
 
-    out += 'TARGET_GAPPS_VARIANT ?= gms\n'
-    out += 'ifeq ($(strip $(TARGET_CORE_GMS)),true)\n'
-    out += '    TARGET_GAPPS_VARIANT := core\n'
-    out += 'endif\n\n'
-    out += '# Map Gapps variant to Soong phony modules\n'
+    out += 'TARGET_GAPPS_VARIANT ?= gms\n\n'
+    out += '# Map GMS variant to Soong phony modules\n'
     out += 'ifeq ($(strip $(TARGET_GAPPS_VARIANT)),pico)\n'
     out += '    PRODUCT_PACKAGES += GmsCoreMain\n'
     out += 'else ifeq ($(strip $(TARGET_GAPPS_VARIANT)),core)\n'

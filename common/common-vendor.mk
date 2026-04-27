@@ -47,11 +47,8 @@ PRODUCT_COPY_FILES += \
     vendor/gms/common/proprietary/system_ext/etc/permissions/privapp-permissions-google-se.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-google-se.xml
 
 TARGET_GAPPS_VARIANT ?= gms
-ifeq ($(strip $(TARGET_CORE_GMS)),true)
-    TARGET_GAPPS_VARIANT := core
-endif
 
-# Map Gapps variant to Soong phony modules
+# Map GMS variant to Soong phony modules
 ifeq ($(strip $(TARGET_GAPPS_VARIANT)),pico)
     PRODUCT_PACKAGES += GmsCoreMain
 else ifeq ($(strip $(TARGET_GAPPS_VARIANT)),core)

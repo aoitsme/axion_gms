@@ -1,0 +1,7 @@
+runtime_resource_overlay {
+    name: "PixelSetupWizardOverlay2024",
+    theme: "PixelSetupWizardOverlay2024",
+    certificate: "platform",
+    sdk_version: "current",
+    product_specific: true,
+}

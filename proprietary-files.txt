@@ -34,8 +34,6 @@ product/priv-app/PrebuiltGmsCore/m/independent/AndroidPlatformServices/AndroidPl
 product/priv-app/PrebuiltGmsCore/m/optional/MlkitBarcodeUIPrebuilt.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/m/optional/TfliteDynamitePrebuilt.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/m/optional/VisionBarcodePrebuilt.apk;PRESIGNED
-system/app/GoogleExtShared/GoogleExtShared.apk;OVERRIDES=ExtShared;PRESIGNED
-system_ext/priv-app/GoogleFeedback/GoogleFeedback.apk;PRESIGNED
 system_ext/priv-app/GoogleServicesFramework/GoogleServicesFramework.apk;PRESIGNED
 
 # Keyboard (core+gms)
@@ -43,6 +41,7 @@ product/app/LatinIMEGooglePrebuilt/LatinIMEGooglePrebuilt.apk;OVERRIDES=LatinIME
 
 # Permissions (all variants)
 product/etc/default-permissions/default-permissions.xml
+product/etc/permissions/com.google.android.apps.setupwizard.searchselector.xml
 product/etc/permissions/com.google.android.dialer.support.xml
 product/etc/permissions/privapp-permissions-google-p.xml
 product/etc/permissions/split-permissions-google.xml

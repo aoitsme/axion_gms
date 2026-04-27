@@ -33,6 +33,11 @@ SHARED_OVERLAY_REQUIRED_BY = {
     "GoogleConfigOverlay": "PrebuiltGmsCoreVic",
 }
 
+ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
+SOURCE_OVERLAY_BLACKLIST = (
+    "caimito",
+)
+
 def _apktool_cmd(job_count: int | None = None):
     jar = os.environ.get("APKTOOL_JAR")
     base_cmd = ["java", "-jar", jar] if jar and os.path.isfile(jar) else ["apktool"]
@@ -186,14 +191,7 @@ def overlay_fixup(path: str, apktool_jobs: int | None = None):
     else:
         print("exclude-tag.txt not found. Skipping tag removal.")
     print(f"{log_prefix} sanitizing resource filenames containing '$'")
-    for root, _dirs, files in os.walk(folder):
-        for file in files:
-            if "$" in file:
-                new_name = re.sub(r"\$", "", file)
-                old_path = os.path.join(root, file)
-                new_path = os.path.join(root, new_name)
-                os.rename(old_path, new_path)
-                print(f"Renamed file: {file} -> {new_name}")
+    _sanitize_resource_filenames(Path(folder))
     
     bad_xml = os.path.join(folder, "res", "xml", "bookmarks.xml")
     if os.path.exists(bad_xml):
@@ -446,15 +444,141 @@ def discover_source_overlays(source_path: Path) -> list[Path]:
     return sorted(overlay_apks)
 
 
+def _source_overlay_target(manifest_path: Path) -> str | None:
+    if not manifest_path.exists():
+        return None
+    tree = ET.parse(manifest_path)
+    overlay_elem = tree.getroot().find("overlay")
+    if overlay_elem is None:
+        return None
+    return overlay_elem.get(f"{ANDROID_NS}targetPackage")
+
+
+def _source_overlay_module_name(decomp_dir: Path) -> str:
+    manifest_path = decomp_dir / "AndroidManifest.xml"
+    if manifest_path.exists():
+        application = ET.parse(manifest_path).getroot().find("application")
+        label = application.get(f"{ANDROID_NS}label") if application is not None else None
+        if label and not label.startswith("@") and re.match(r"^[A-Za-z0-9_.+-]+$", label):
+            return label
+    return re.sub(r"[^A-Za-z0-9_.+-]", "_", decomp_dir.stem)
+
+
+def _is_source_overlay_blacklisted(decomp_dir: Path) -> bool:
+    values = [decomp_dir.stem]
+    manifest_path = decomp_dir / "AndroidManifest.xml"
+    if manifest_path.exists():
+        root = ET.parse(manifest_path).getroot()
+        values.append(root.get("package", ""))
+        overlay = root.find("overlay")
+        if overlay is not None:
+            values.append(overlay.get(f"{ANDROID_NS}targetName", ""))
+        application = root.find("application")
+        if application is not None:
+            values.append(application.get(f"{ANDROID_NS}label", ""))
+
+    haystack = " ".join(values).lower()
+    return any(item in haystack for item in SOURCE_OVERLAY_BLACKLIST)
+
+
+def _sanitize_resource_filenames(folder: Path):
+    replacements: dict[str, str] = {}
+    for path in sorted(folder.rglob("*")):
+        if not path.is_file() or "$" not in path.name:
+            continue
+
+        new_path = path.with_name(path.name.replace("$", ""))
+        if new_path.exists():
+            path.unlink()
+        else:
+            path.rename(new_path)
+        replacements[path.stem] = new_path.stem
+        print(f"Renamed file: {path.name} -> {new_path.name}")
+
+    if not replacements:
+        return
+
+    for path in folder.rglob("*"):
+        if not path.is_file() or path.suffix not in {".xml", ".json"}:
+            continue
+
+        content = path.read_text(encoding="utf-8", errors="replace")
+        updated = content
+        for old, new in replacements.items():
+            updated = updated.replace(f"@drawable/{old}", f"@drawable/{new}")
+            updated = updated.replace(f"@mipmap/{old}", f"@mipmap/{new}")
+            updated = updated.replace(f"@raw/{old}", f"@raw/{new}")
+        if updated != content:
+            path.write_text(updated, encoding="utf-8")
+
+
+def _clean_grabbed_source_overlay(out: Path):
+    for path in [
+        out / "apktool.yml",
+        out / "res" / "values" / "public.xml",
+    ]:
+        if path.exists():
+            path.unlink()
+
+    for path in [
+        out / "original",
+        out / "unknown",
+    ]:
+        if path.exists():
+            shutil.rmtree(path)
+
+    for wallpaper in out.glob("**/default_wallpaper.png"):
+        wallpaper.unlink()
+
+    _sanitize_resource_filenames(out)
+
+    manifest_path = out / "AndroidManifest.xml"
+    if manifest_path.exists():
+        content = manifest_path.read_text(encoding="utf-8")
+        content = re.sub(
+            r'extractNativeLibs\s*=\s*["\']false["\']',
+            r'extractNativeLibs="true"',
+            content,
+            flags=re.IGNORECASE,
+        )
+        manifest_path.write_text(content, encoding="utf-8")
+
+
+def _write_source_overlay_bp(out: Path, module_name: str):
+    bp = (
+        'runtime_resource_overlay {\n'
+        f'    name: "{module_name}",\n'
+        f'    theme: "{module_name}",\n'
+        '    certificate: "platform",\n'
+        '    sdk_version: "current",\n'
+        '    product_specific: true,\n'
+        '}\n'
+    )
+    (out / "Android.bp").write_text(bp, encoding="utf-8")
+
+
+def _copy_source_overlay(decomp_dir: Path, output_dir: Path, module_name: str) -> Path:
+    out = output_dir / module_name
+    if out.exists():
+        shutil.rmtree(out)
+    shutil.copytree(decomp_dir, out)
+    _clean_grabbed_source_overlay(out)
+    _write_source_overlay_bp(out, module_name)
+    return out
+
+
 def grab_dynamic_overlays(source_path: Path, output_dir: Path, overlay_specs: dict[str, dict[str, object]]):
     source_overlays = discover_source_overlays(source_path)
     if not source_overlays:
         print(f"[grabber] no source overlays found in {source_path}")
-        return []
+        return {}
 
     print(f"[grabber] discovered {len(source_overlays)} source overlays to grabber")
     
     grabbed: dict[tuple[str, str], dict[Path, dict[str, ET.Element]]] = {}
+    package_to_module = {pkg: mod for mod, pkg in GMS_PACKAGE_MAPPING.items()}
+    source_overlay_deps: list[tuple[Path, str, str, str]] = []
+    source_overlay_dirs: set[Path] = set()
     
     for spec in overlay_specs.values():
         spec.setdefault("resource_names", set())
@@ -479,6 +603,24 @@ def grab_dynamic_overlays(source_path: Path, output_dir: Path, overlay_specs: di
         print(f"[grabber] decompiled all source overlays; scanning for resources")
         
         for decomp_dir in sorted(temp_root.iterdir()):
+            if _is_source_overlay_blacklisted(decomp_dir):
+                print(f"[grabber] skipping blacklisted source overlay {decomp_dir.stem}")
+                source_overlay_dirs.add(decomp_dir)
+                continue
+
+            target_pkg = _source_overlay_target(decomp_dir / "AndroidManifest.xml")
+            redirected_target_pkg = TARGET_REDIRECTION_MAP.get(target_pkg, target_pkg)
+            required_by = package_to_module.get(redirected_target_pkg)
+            if required_by is not None:
+                source_overlay_deps.append((
+                    decomp_dir,
+                    _source_overlay_module_name(decomp_dir),
+                    required_by,
+                    redirected_target_pkg,
+                ))
+                source_overlay_dirs.add(decomp_dir)
+                continue
+
             default_values_dir = decomp_dir / "res" / "values"
             if not default_values_dir.exists():
                 continue
@@ -493,13 +635,16 @@ def grab_dynamic_overlays(source_path: Path, output_dir: Path, overlay_specs: di
                         overlay_specs[owner]["resource_names"].add(name)
 
         for decomp_dir in sorted(temp_root.iterdir()):
+            if decomp_dir in source_overlay_dirs:
+                continue
+
             manifest_path = decomp_dir / "AndroidManifest.xml"
             target_pkg = "android"
             if manifest_path.exists():
                 tree = ET.parse(manifest_path)
                 overlay_elem = tree.getroot().find('overlay')
                 if overlay_elem is not None:
-                    target_pkg = overlay_elem.get('{http://schemas.android.com/apk/res/android}targetPackage', "android")
+                    target_pkg = overlay_elem.get(f"{ANDROID_NS}targetPackage", "android")
 
             target_pkg = TARGET_REDIRECTION_MAP.get(target_pkg, target_pkg)
 
@@ -526,27 +671,32 @@ def grab_dynamic_overlays(source_path: Path, output_dir: Path, overlay_specs: di
                         elif name not in file_bucket:
                             file_bucket[name] = new_el
 
-        shutil.rmtree(temp_root)
+        generated_map: dict[str, list[str]] = {}
 
-    generated_map: dict[str, list[str]] = {}
-    
-    if output_dir.exists():
-        shutil.rmtree(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        for decomp_dir, module_name, required_by, target_pkg in source_overlay_deps:
+            _copy_source_overlay(decomp_dir, output_dir, module_name)
+            generated_map.setdefault(required_by, []).append(module_name)
+            print(f"[grabber] grabbed {module_name} targeting shipped package {target_pkg}")
+
+        shutil.rmtree(temp_root)
 
     for (owner, target_pkg), resource_map in grabbed.items():
         required_by = overlay_specs[owner]["required_by"]
-        
+
         if target_pkg == "android":
             overlay_name = owner
         else:
             suffix = target_pkg.split(".")[-1].capitalize()
             overlay_name = f"{owner}{suffix}"
-            
+
         out = synthesize_overlay_module(overlay_name, target_pkg, 1000, output_dir)
         for rel_path, elements_dict in resource_map.items():
             _write_xml_resources(out / rel_path, list(elements_dict.values()))
-            
+
         generated_map.setdefault(required_by, []).append(overlay_name)
         print(f"[grabber] synthesized {overlay_name} targeting {target_pkg} (files={len(resource_map)})")
 
@@ -596,6 +746,12 @@ def _find_android_app_import_block(content: str, module_name: str) -> tuple[int,
         if block_start == -1:
             return None
         block_end = content.find("\n}\n", block_start)
+        while (
+            block_end != -1
+            and content.count("{", block_start, block_end + 2)
+            != content.count("}", block_start, block_end + 2)
+        ):
+            block_end = content.find("\n}\n", block_end + 1)
         if block_end == -1:
             return None
         block_end += len("\n}\n")
@@ -616,6 +772,11 @@ def update_required_modules(common_bp_path: Path, generated_map: dict[str, list[
     all_known_overlays = set()
     for overlays in generated_map.values():
         all_known_overlays.update(overlays)
+
+    overlay_dir = common_bp_path.parent.parent / "overlays" / "common" / "proprietary" / "product" / "overlay"
+    current_overlay_modules = set(all_known_overlays)
+    if overlay_dir.exists():
+        current_overlay_modules.update(path.name for path in overlay_dir.iterdir() if path.is_dir())
     
     for module_name, overlay_names in generated_map.items():
         block_info = _find_android_app_import_block(content, module_name)
@@ -629,7 +790,14 @@ def update_required_modules(common_bp_path: Path, generated_map: dict[str, list[
         else:
             required = []
             
-        required = [r for r in required if not (r.endswith("Overlay") and (r in all_known_overlays or r == module_name + "Overlay"))]
+        required = [
+            r for r in required
+            if not (
+                ("Overlay" in r and r in all_known_overlays)
+                or (r.endswith("Overlay") and r == module_name + "Overlay")
+                or ("Overlay" in r and r not in current_overlay_modules)
+            )
+        ]
         
         for name in overlay_names:
             if name not in required:

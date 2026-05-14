@@ -20,7 +20,7 @@ product/priv-app/PrebuiltDeskClockGoogle_76007351/PrebuiltDeskClockGoogle_760073
 product/priv-app/Velvet/Velvet.apk;OVERRIDES=QuickSearchBox;PRESIGNED
 
 # Google Play (pico+core+gms — all variants need GMS Core + Phonesky + GSF)
-product/priv-app/Phonesky/Phonesky.apk;OVERRIDES=messaging;PRESIGNED
+product/priv-app/Phonesky/Phonesky.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCoreVic/PrebuiltGmsCoreVic.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/app_chimera/m/PrebuiltGmsCoreVic_AdsDynamite/PrebuiltGmsCoreVic_AdsDynamite.apk;PRESIGNED
 product/priv-app/PrebuiltGmsCore/app_chimera/m/PrebuiltGmsCoreVic_CronetDynamite/PrebuiltGmsCoreVic_CronetDynamite.apk;PRESIGNED

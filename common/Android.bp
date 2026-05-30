@@ -567,6 +567,7 @@ phony {
         "PrebuiltGmsCoreVic_GoogleCertificates",
         "PrebuiltGmsCoreVic_MapsDynamite",
         "PrebuiltGmsCoreVic_MeasurementDynamite",
+        "AndroidAutoStubPrebuilt",
     ],
 }
 
@@ -580,7 +581,6 @@ phony {
 phony {
     name: "CorePkgs",
     required: [
-        "AndroidAutoStubPrebuilt",
         "CommonPkgs",
         "LatinIMEGooglePrebuilt",
     ],
